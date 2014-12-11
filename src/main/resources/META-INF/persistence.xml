@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="TransactionLoggerPU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/transactionlogger</jta-data-source>
+        <class>com.generic.entity.impl.EdgeConstraints</class>
+        <class>com.generic.entity.impl.Edge</class>
+        <class>com.generic.entity.impl.Node</class>
+        <class>com.generic.entity.impl.Graph</class>
+        <class>com.generic.entity.impl.ApplicationFlowConfiguration</class>
+        <class>com.generic.entity.impl.GlobalFlowConfiguration</class>
+        
+        <class>com.generic.entity.impl.LogMessage</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_01</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_02</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_03</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_04</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_05</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_06</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_07</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_08</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_09</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_10</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_11</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_12</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_13</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_14</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_15</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_16</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_17</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="TransactionLoggerDev" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/transactionlogger_dev</jta-data-source>
+        <class>com.generic.entity.impl.EdgeConstraints</class>
+        <class>com.generic.entity.impl.Edge</class>
+        <class>com.generic.entity.impl.Node</class>
+        <class>com.generic.entity.impl.Graph</class>
+        <class>com.generic.entity.impl.ApplicationFlowConfiguration</class>
+        <class>com.generic.entity.impl.GlobalFlowConfiguration</class>
+        
+        <class>com.generic.entity.impl.LogMessage</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_01</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_02</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_03</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_04</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_05</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_06</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_07</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_08</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_09</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_10</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_11</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_12</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_13</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_14</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_15</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_16</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_17</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="TransactionLoggerTest" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/transactionlogger_test</jta-data-source>
+        <class>com.generic.logger.server.entity.impl.LogMessage</class>
+        <class>com.generic.logger.server.entity.impl.LogMessageData</class>
+        <class>com.generic.logger.server.entity.impl.EdgeConstraints</class>
+        <class>com.generic.logger.server.entity.impl.Edge</class>
+        <class>com.generic.logger.server.entity.impl.LogMessageMetaInfo</class>
+        <class>com.generic.logger.server.entity.impl.Node</class>
+        <class>com.generic.logger.server.entity.impl.Graph</class>
+        <class>com.generic.logger.server.entity.impl.FlowConfiguration</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="TransactionLoggerQA" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/transactionlogger_qa</jta-data-source>
+        <class>com.generic.entity.impl.EdgeConstraints</class>
+        <class>com.generic.entity.impl.Edge</class>
+        <class>com.generic.entity.impl.Node</class>
+        <class>com.generic.entity.impl.Graph</class>
+        <class>com.generic.entity.impl.ApplicationFlowConfiguration</class>
+        <class>com.generic.entity.impl.GlobalFlowConfiguration</class>
+        
+        <class>com.generic.entity.impl.LogMessage</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_01</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_02</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_03</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_04</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_05</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_06</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_07</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_08</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_09</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_10</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_11</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_12</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_13</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_14</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_15</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_16</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_17</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="TransactionLoggerProd" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/transactionlogger_prod</jta-data-source>
+        <class>com.generic.entity.impl.EdgeConstraints</class>
+        <class>com.generic.entity.impl.Edge</class>
+        <class>com.generic.entity.impl.Node</class>
+        <class>com.generic.entity.impl.Graph</class>
+        <class>com.generic.entity.impl.ApplicationFlowConfiguration</class>
+        <class>com.generic.entity.impl.GlobalFlowConfiguration</class>
+        
+        <class>com.generic.entity.impl.LogMessage</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_01</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_02</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_03</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_04</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_05</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_06</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_07</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_08</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_09</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_10</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_11</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_12</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_13</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_14</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_15</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_16</class>
+        <class>com.generic.entity.impl.LogMessageData_Partition_17</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
+    </persistence-unit>
+</persistence>

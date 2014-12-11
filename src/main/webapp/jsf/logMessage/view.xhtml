@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:aui="http://liferay.com/faces/aui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core" 
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:bridge="http://liferay.com/faces/bridge"
+        xmlns:example-cc="http://java.sun.com/jsf/composite/example-cc" 
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+        <h:outputStylesheet name="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/Point.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/Node.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/Edge.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/Graph.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/GraphLayout.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/GraphRender.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/raphael-min.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/dracula_graffle.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/json2.js"></script>
+        <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js"></script>
+        <script language="javascript" type="text/javascript">//<![CDATA[
+
+
+
+
+
+            jQuery(document).ready(function() {
+
+                jQuery(function() {
+                    jQuery("#waitDialog").dialog({
+                        autoOpen: false,
+                        modal: false,
+                        resizable: false,
+                        dialogClass: "waitDialog"
+                    });
+
+                });
+                
+                jQuery('#logMessageSearchForm\\:submitSearchButton').click(function() {
+
+                    jQuery("#circle").show();
+                    jQuery("#circle1").show();
+                    jQuery(".ui-dialog-titlebar").hide();
+                    jQuery("#waitDialog").dialog("open");
+                });
+
+
+                // Get all canvas ids
+                var canvas_ids = $("[id^=canvas_]")
+                        .map(function() {
+                            return this.id.replace(/:/g, "\\:");
+                        }).get();
+                /*for (i in canvas_ids) {
+                 alert(canvas_ids[i]);
+                 }*/
+
+                // Get all json ids
+                var json_ids = $("[id*=json_data_]")
+                        .map(function() {
+                            return '#' + this.id.replace(/:/g, "\\:");
+                        }).get();
+                /*for (var i = 0; i < json_ids.length; i++) {
+                 alert(json_ids[i]);
+                 }*/
+
+                // Create g        
+                for (var i = 0; i < json_ids.length; i++) {
+                    var canvas_id = canvas_ids[i];
+                    // prepare g
+                    var width = 600;
+                    var height = 200;
+                    var graph = new Graph();
+                    // parse data to json obj
+                    var json_id = json_ids[i];
+                    var json_text = $(json_id).text();
+                    var json_obj = JSON.parse(json_text);
+                    // nodes
+                    for (var j = 0; j < json_obj.nodes.length; j++) {
+                        //alert(json_obj.nodes[j].id);
+                        //addNode(json_obj.nodes[j].key, g);
+                        //alert(json_obj.nodes);
+                        var node_key = undefined;
+                        var node_name = undefined;
+                        node_key = json_obj.nodes[j].id;
+                        node_name = json_obj.nodes[j].name;
+                        var logMessageId = undefined;
+                        var isError = undefined;
+                        if (json_obj.nodes[j].logMessages.length !== 0) {
+                            logMessageId = json_obj.nodes[j].logMessages[0].id;
+                            isError = json_obj.nodes[j].logMessages[0].isError;
+                        }
+                        graph.addNode(new Node(node_key, node_name, logMessageId, isError));
+                    }
+
+                    // edges
+
+                    for (var k = 0; k < json_obj.edges.length; k++) {
+                        //alert(json_obj.edges[k].from + "," + json_obj.edges[k].to);
+                        //addEdge(json_obj.edges[k].from, json_obj.edges[k].to, g);
+                        var edge_id = undefined;
+                        var edge_from = undefined;
+                        var edge_to = undefined;
+                        edge_id = json_obj.edges[k].id;
+                        edge_from = graph.getNode(json_obj.edges[k].from);
+                        edge_to = graph.getNode(json_obj.edges[k].to);
+                        if (edge_from != undefined && edge_to !== undefined) {
+                            graph.addEdge(new Edge(edge_id, edge_from, edge_to));
+                        } else {
+                            //log('Edge not in graph! FromNode=[ ' + json_obj.edges[k].from + ' ] ToNode=[ ' + json_obj.edges[k].to + ' ]');
+                        }
+                    }
+
+
+
+                    //draw 
+                    var layouter = new Graph.Layout.FlowTree(graph);
+                    layouter.layout();
+                    var paper = new Raphael(canvas_id, width, height);
+                    //
+                    var renderer = new Graph.Renderer.FlowTree(paper, graph);
+                    renderer.draw();
+                }
+
+
+            }
+            );
+            //]]></script>
+
+
+    </h:head>
+
+    <h:body>
+
+        <div class="wrapper">
+            <h1 style="text-align:center;" > 
+
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" 
+                                infoStyle="color: green" 
+                                layout="table" 
+                                rendered="#{userAgentController.processUserAgent}"/>
+                </h:panelGroup>
+                
+            </h1>
+            <p>
+                <div class="panelGridOuter">
+
+                    
+
+                    <h:form id="logMessageSearchForm" class="logMessageSearchForm">   
+               
+
+                        <div class="panelGridInner">
+
+                            <p:outputPanel id="outputPanle_1">
+
+                                <table class="tableStaticTextSearch" >
+                                    <tbody class="tableBodyStaticTextSearch">
+
+                                        <tr>
+
+                                            <td class="staticTextSearch_column_one">
+                                                <h:outputLabel value="View log from:  "  />    
+                                            </td>
+                                            <td class="staticTextSearch_column_two"> 
+                                                <h:inputText value="#{logMessageController.searchFromDate}" 
+                                                             styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+
+                                            </td>
+
+                                            <td class="staticTextSearch_column_three">
+                                                <h:outputLabel value=" to: "  />    
+                                            </td>
+                                            <td class="staticTextSearch_column_four"> 
+                                                <h:inputText value="#{logMessageController.searchToDate}" 
+                                                             styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+                                            </td>
+
+
+                                        </tr>    
+                                        <tr>   
+
+                                            <td class="staticTextSearch_column_one">
+                                                <h:outputLabel value=" Application Name:"  />    
+                                            </td>
+                                            <td class="staticTextSearch_column_two"> 
+                                                <p:autoComplete id="acForceApplicationName" 
+                                                                forceSelection="true"
+                                                                dropdown="true"
+                                                                maxResults="250"
+                                                                scrollHeight="500"
+                                                                value="#{logMessageController.searchInApplicationName}"   
+                                                                completeMethod="#{logMessageController.completeApplicationName}"/>  
+                                            </td>
+
+                                            <td class="staticTextSearch_column_three">
+                                                <h:outputLabel value=" Flow Name:" />    
+                                            </td>
+                                            <td class="staticTextSearch_column_four"> 
+                                                <p:autoComplete id="acForceFlowName" 
+                                                                forceSelection="true"
+                                                                dropdown="true"
+                                                                maxResults="250"
+                                                                scrollHeight="500"
+                                                                value="#{logMessageController.searchInFlowName}"   
+                                                                completeMethod="#{logMessageController.completeFlowName}"/>  
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </p:outputPanel>
+
+
+                            <div class="payloadSpanIndicator">
+                                <h:outputLabel value="Search in payloads from : 0 Byte up to 2 Megabyte. Change 'Big payload text search options' for greater payload size span."/>
+                            </div>
+
+                            <p:outputPanel id="outputPanel_2">
+
+                                <table id="tableFreeTextSearch" class="tableFreeTextSearch">
+                                    <tbody class="tableBodyFreeTextSearch">
+
+
+                                        <ui:repeat value="#{logMessageController.freeTextSearch.getIndexSequence()}" 
+                                                   var="_index" 
+                                                   varStatus="loop">
+
+                                            <tr class="tdFreeTextSearch">
+
+                                                <td class="freeTextSearch_column_one">
+
+
+                                                    <h:outputLabel value="Payload text search:" 
+                                                                   rendered="#{loop.first}"/>
+
+
+                                                    <h:outputLabel value="       AND        "                                                                
+                                                                   rendered="#{!loop.first}"/>
+                                                </td>
+
+                                                <td class="freeTextSearch_column_two">
+
+
+
+                                                    <p:commandLink  action="#{logMessageController.freeTextSearch.addTextField}"
+                                                                    rendered="#{loop.first}"
+                                                                    update=":logMessageSearchForm:outputPanel_2">
+                                                        <h:graphicImage library="images" 
+                                                                        name="add.png"
+                                                                        class="imgFreeTextSearch"
+                                                                        title="Add"
+                                                                        />
+                                                        <h:outputLabel value="" />
+                                                    </p:commandLink>
+
+
+
+
+                                                    <p:commandLink  rendered="#{!loop.first}"
+                                                                    actionListener="#{logMessageController.freeTextSearch.removeTextField}"
+                                                                    update=":logMessageSearchForm:outputPanel_2">
+                                                        <f:attribute name="index" value="#{loop.index}" />
+                                                        <h:graphicImage library="images" 
+                                                                        name="remove.png"  
+                                                                        class="imgFreeTextSearch"
+                                                                        title="Delete"/>
+
+                                                    </p:commandLink>
+                                                </td>
+
+                                                <td class="freeTextSearch_column_three">
+
+                                                    <h:inputText id="freeText#{loop.index}"
+                                                                 value="#{logMessageController.freeTextSearch.getStringWrapper(_index).content}"
+                                                                 styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+                                                </td>
+
+
+                                            </tr>     
+                                        </ui:repeat>
+                                    </tbody>
+                                </table>
+                            </p:outputPanel>
+
+                        </div>
+
+
+
+
+                        <div class="optionalPanelGridInner">
+                            <ul id="searchOptionPanel" class="searchOptionPanel">
+
+                                <li>
+                                    <h:commandButton id="submitSearchButton" 
+                                                     value="Search" 
+                                                     action="#{logMessageController.search()}" 
+                                                     class="searchOptionPanel-button ui-state-default ui-corner-all ui-widget-header"
+                                                     >
+                                    </h:commandButton>
+                                </li>
+                                <li>
+                                    <h:commandButton id="clearSearchFieldsButton"                                                       
+                                                     value="Clear" 
+                                                     action="#{logMessageController.clearSearchFields()}"
+                                                     class="searchOptionPanel-button ui-state-default ui-corner-all ui-widget-header">
+                                    </h:commandButton>
+                                </li>
+                                <li>
+                                    <p:selectCheckboxMenu value="#{logMessageController.dataBaseSearchController.selectedDatabases}" 
+                                                          label="Big payload text search options" 
+                                                          filter="true" 
+                                                          scrollHeight="200" 
+                                                          filterFunction="Filter" 
+                                                          filterMatchMode="startsWith" 
+                                                          >  
+                                        <f:selectItems value="#{logMessageController.dataBaseSearchController.databases}" />  
+                                    </p:selectCheckboxMenu>  
+                                </li>
+                                <li>
+                                    <h:selectOneRadio id="options" value="#{logMessageController.selectedOption}" onclick="submit()"
+                                                      class="ui-icon-trash">  
+                                        <f:selectItem itemLabel="List All" itemValue="1" />  
+                                        <f:selectItem itemLabel="List Error" itemValue="2" />  
+                                        <f:selectItem itemLabel="List Success" itemValue="3" />  
+                                    </h:selectOneRadio> 
+                                </li>
+                            </ul>   
+                        </div>
+
+
+
+                    </h:form> 
+                 
+
+                </div>
+
+            </p>
+
+            <p>
+                <div id="waitDialog">
+                    <div id="circle" class="circle" style="display: none"></div>
+                    <div id="circle1" class="circle1" style="display: none"></div>
+                </div>
+                <h:panelGrid id="logMessagePanelGrid" class="panelGridOuter">
+                    <h:form id="logMessageListForm" class="jsfcrud_list_form">
+           
+                        <h:outputText escape="false" value="#{bundle.ListTransactionEntityEmpty}" rendered="#{logMessageController.items.rowCount == 0}"/>
+
+                        <h:outputText 
+                            rendered="#{logMessageController.pagination.itemsCount == 5000}"
+                            value="#{logMessageController.pagination.pageFirstItem + 1}..#{logMessageController.pagination.pageLastItem + 1}/#{logMessageController.pagination.itemsCount} (Max result)"/>
+
+                        <h:outputText 
+                            rendered="#{logMessageController.pagination.itemsCount != 5000}"
+                            value="#{logMessageController.pagination.pageFirstItem + 1}..#{logMessageController.pagination.pageLastItem + 1}/#{logMessageController.pagination.itemsCount}"/>
+
+                        <h:commandLink action="#{logMessageController.previous}" value="#{bundle.Previous} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.pagination.hasPreviousPage}"/>
+                        <h:commandLink action="#{logMessageController.next}" value="#{bundle.Next} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.pagination.hasNextPage}"/>
+
+
+                        <h:panelGroup id="logmessages_view" rendered="#{logMessageController.items.rowCount > 0}" >
+
+                            <h:dataTable id="logMessageTable"
+                                         value="#{logMessageController.items}" 
+                                         var="item" 
+                                         border="0" 
+                                         cellpadding="2" 
+                                         cellspacing="0" 
+                                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                         rules="all" >
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionEntityTitle_id}"/>
+                                    </f:facet>
+
+                                    <h:graphicImage rendered="#{item.isError}"
+                                                    library="images" 
+                                                    name="error.jpeg"
+                                                    styleClass="images"
+                                                    class="error" 
+                                                    title="Error"/>
+
+                                    <h:graphicImage rendered="#{!item.isError}"
+                                                    library="images" 
+                                                    name="ok.jpeg" 
+                                                    class="ok"  
+                                                    title="Ok"/>
+
+
+                                </p:column>
+
+
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionEntityTitle_utcLocalTimeStamp}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{logMessageController.convertTimestampTime(item.utcLocalTimeStamp)}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionEntityTitle_utcServerTimeStamp}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{logMessageController.convertTimestampTime(item.utcServerTimeStamp)}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionEntityTitle_applicationName}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.applicationName}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="FlowName"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.flowName}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionEntityTitle_transactionLogPointInfo}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.flowPointName}"/>
+                                </p:column>
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionEntityTitle_transactionReferenceID}"/>
+                                    </f:facet>
+
+
+                                    <p:commandLink styleClass="selectedLink"
+                                                   action="#{logMessageController.prepareLogView(item)}" 
+                                                   value="#{item.transactionReferenceID}"
+                                                   rendered="#{logMessageController.isSelected(item.id)}"
+                                                   update=":logMessageListForm :logMsgDetail"
+                                                   oncomplete="PF('logMessageDataDialog').show()"/>
+
+                                    <p:commandLink styleClass="notSelectedLink"
+                                                   action="#{logMessageController.prepareLogView(item)}" 
+                                                   value="#{item.transactionReferenceID}"
+                                                   rendered="#{!logMessageController.isSelected(item.id)}"
+                                                   update=":logMessageListForm :logMsgDetail"
+                                                   oncomplete="PF('logMessageDataDialog').show()">
+                                        <f:setPropertyActionListener target="#{logMessageController.selected}" value="#{item}" />  
+                                    </p:commandLink>
+                                </p:column>
+
+
+
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle}"/>
+                                    </f:facet>
+
+
+
+                                    <p:commandLink id ="viewListData1"
+                                                   styleClass="selectedLink"
+                                                   value="#{bundle.EditTransactionEntityViewLink}"
+                                                   rendered="#{logMessageController.isSelected(item.id)}"
+                                                   action="#{logMessageController.prepareLogMsgDetailView()}"                                              
+                                                   update=":logMessageListForm :logMsgDetail"
+                                                   oncomplete="PF('logMessageDataDialog').show()" >
+                                    </p:commandLink>
+
+
+
+
+                                    <p:commandLink id ="viewListData2"
+                                                   styleClass="notSelectedLink"
+                                                   value="#{bundle.EditTransactionEntityViewLink}"
+                                                   rendered="#{!logMessageController.isSelected(item.id)}"
+                                                   action="#{logMessageController.prepareLogMsgDetailView()}"
+                                                   update=":logMessageListForm :logMsgDetail"
+                                                   oncomplete="PF('logMessageDataDialog').show()" >
+                                        <f:setPropertyActionListener target="#{logMessageController.selected}" value="#{item}" />  
+
+                                    </p:commandLink>
+
+
+
+                                </p:column>
+
+                            </h:dataTable>
+                        </h:panelGroup>
+                        <br />
+
+                        <br />
+                        <br />
+                        
+
+                    </h:form>
+
+
+                    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                    <!-- Show selected logMessage. Iff dialog not contains "dynamic="true"-->
+                    <!-- dialog frame is empty.                                           -->
+                    <!-- modal="false" == Crtl+C works                                    -->
+
+                    <p:outputPanel styleClass="dialogPanel">
+                        <p:dialog header="Log Message Details" dynamic="true" appendTo="@(body)" closeOnEscape="true" width="95%" height="800" widgetVar="logMessageDataDialog" modal="false" resizable="true">  
+                            <p:outputPanel id="logMsgDetail">
+                                <ui:include src="ListData.xhtml"/>
+                            </p:outputPanel>
+                        </p:dialog>  
+                    </p:outputPanel>
+
+
+                </h:panelGrid>
+
+            </p>
+        </div>
+
+
+    </h:body>
+</f:view>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+Copyright (C) 2014 erbjuder.com
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<definitions 
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" 
+    xmlns:wsp="http://www.w3.org/ns/ws-policy" 
+    xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" 
+    xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:tns="urn:generic.com:Global:Flow" 
+    xmlns:spf="urn:generic.com:Global:Fault"   
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://schemas.xmlsoap.org/wsdl/" 
+    targetNamespace="urn:generic.com:Global:Flow" 
+    name="FlowPointBinding">
+    
+    
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="urn:generic.com:Global:Fault"  schemaLocation="ServiceFault.xsd"/>
+            <xsd:import namespace="urn:generic.com:Global:Flow"  schemaLocation="FlowPointBinding.xsd"/>
+        </xsd:schema> 
+    </types>
+    
+
+
+    <message name="FlowPointBindings">
+        <part name="FlowPointBindings" element="tns:FlowPointBindings"/>
+    </message>
+
+    <message name="Response">
+        <part name="response" element="tns:Response"/>
+    </message>    
+
+    <message name="ServiceFault">  
+        <part name="error" element="spf:Error"/>  
+    </message> 
+
+
+    <portType name="FlowPointBinding">
+        <operation name="Persist">
+            <input message="tns:FlowPointBindings"/>
+            <output message="tns:Response"/>
+            <fault name="error" message="tns:ServiceFault"/>  
+        </operation>
+    </portType>
+    
+    <binding name="FlowPointBinding_Binding" type="tns:FlowPointBinding">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="Persist">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+            <fault name="error">  
+                <soap:fault name="error" use="literal"/>  
+            </fault>
+        </operation>
+    </binding>
+    
+    <service name="FlowPointBindingService">
+        <port name="FlowPointBinding_InPort" binding="tns:FlowPointBinding_Binding">
+            <soap:address location="http://localhost:8080"/>
+        </port>
+    </service>
+  
+    
+</definitions>

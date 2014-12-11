@@ -1,0 +1,21 @@
+@import url(base.css);
+
+
+
+html{
+  background: #66CC00; /* Old browsers */
+  background: -moz-linear-gradient(-45deg,  #101010 0%, #66CC00  100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#101010), color-stop(100%,#66CC00 )); /* Chrome,Safari4+ */ 
+  background: -webkit-linear-gradient(-45deg,  #101010 0%,#66CC00  100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-45deg,  #101010 0%,#66CC00  100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(-45deg,  #101010 0%,#66CC00  100%); /* IE10+ */
+  background: linear-gradient(135deg,  #101010 0%,#66CC00  100%); /* W3C */ 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#101010', endColorstr='#66CC00',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+  background-attachment: fixed;
+}
+body {
+    /*background-color: lightseagreen;*/
+    /*color: #3A4F54;*/
+
+}    

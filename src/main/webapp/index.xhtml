@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Log Message(s) and related viewer</title>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+        <h:outputStylesheet name="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+    </h:head>
+    <h:body>
+
+        <h3>Viewer(s)</h3>
+        <h5>LogMessage(s)</h5>
+        <h:link outcome="/jsf/logMessage/List" value="List log message(s)"/>
+        <br />
+        <h5>Flow(s)</h5>
+        <h:link outcome="/jsf/transactionFlow/List" value="List transaction flow(s)"/>
+        <br />
+
+
+        <br />
+        <h3>WSDL-file(s)</h3>
+        <h5>LogMessageService(s)</h5>
+        <a href="/log_message_services_one_dev/LogMessageService?wsdl">LogMessageService Dev </a>
+        <br />
+        <a href="/log_message_services_one_test/LogMessageService?wsdl">LogMessageService Test</a>
+        <br />
+        <a href="/log_message_services_one_qa/LogMessageService?wsdl">LogMessageService QA</a>
+        <br />
+        <a href="/log_message_services_one_prod/LogMessageService?wsdl">LogMessageService Prod</a>
+        <br />
+        <h5>FlowPointService(s)</h5>
+        <a href="/log_message_services_one_dev/FlowPointService?wsdl">FlowPointService Dev</a>
+        <br />
+        <a href="/log_message_services_one_test/FlowPointService?wsdl">FlowPointService Test</a>
+        <br />
+        <a href="/log_message_services_one_qa/FlowPointService?wsdl">FlowPointService QA</a>
+        <br />
+        <a href="/log_message_services_one_prod/FlowPointService?wsdl">FlowPointService Prod</a>
+        <br />
+        <h5>FlowPointBindingService(s)</h5>
+        <a href="/log_message_services_one_dev/FlowPointBindingService?wsdl">FlowPointBindingService Dev</a>
+        <br />
+        <a href="/log_message_services_one_test/FlowPointBindingService?wsdl">FlowPointBindingService Test</a>
+        <br />
+        <a href="/log_message_services_one_qa/FlowPointBindingService?wsdl">FlowPointBindingService QA</a>
+        <br />
+        <a href="/log_message_services_one_prod/FlowPointBindingService?wsdl">FlowPointBindingService Prod</a>
+        <br />
+        <br />
+
+
+
+    </h:body>
+
+
+
+
+
+
+
+</html>
+

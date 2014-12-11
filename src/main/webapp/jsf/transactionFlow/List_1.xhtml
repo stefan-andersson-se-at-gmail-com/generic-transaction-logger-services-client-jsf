@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListTransactionEntityTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="search">
+
+            <h:form id="searchForm">  
+
+                <h:panelGrid columns="4" id="searchPanel" width="50%">
+
+                    <h:outputLabel value="View log from:  " style="font-weight:bold" />    
+                    <h:inputText value="#{transactionFlowBeanController.searchFromDate}" />
+
+                    <h:outputLabel value=" to " style="font-weight:bold" />    
+                    <h:inputText value="#{transactionFlowBeanController.searchToDate}" />
+
+                    <h:outputLabel value=" Application Name:" style="font-weight:bold" />    
+                    <h:inputText value="#{transactionFlowBeanController.searchInApplicationName}" />
+
+                    <h:outputLabel value=" Log Point Name:" style="font-weight:bold" />    
+                    <h:inputText value="#{transactionFlowBeanController.searchInLogPointName}" />
+
+                    <h:outputLabel value=" Search text:" style="font-weight:bold" />    
+                    <h:inputText value="#{transactionFlowBeanController.searchFreeText}" />
+
+                    <h:commandButton action="#{transactionFlowBeanController.search}" id="submitSearchCriteria" style="visibility: hidden;" />
+
+                </h:panelGrid>
+            </h:form>    
+
+        </ui:define>
+
+
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+
+                <h:outputText escape="false" value="#{bundle.ListTransactionEntityEmpty}" rendered="#{transactionFlowBeanController.items.rowCount == 0}"/>
+
+
+                <h:outputText value="#{transactionFlowBeanController.pagination.pageFirstItem + 1}..#{transactionFlowBeanController.pagination.pageLastItem + 1}/#{transactionFlowBeanController.pagination.itemsCount}"/>&nbsp;
+                <h:commandLink action="#{transactionFlowBeanController.previous}" value="#{bundle.Previous} #{transactionFlowBeanController.pagination.pageSize}" rendered="#{transactionFlowBeanController.pagination.hasPreviousPage}"/>&nbsp;
+                <h:commandLink action="#{transactionFlowBeanController.next}" value="#{bundle.Next} #{transactionFlowBeanController.pagination.pageSize}" rendered="#{transactionFlowBeanController.pagination.hasNextPage}"/>&nbsp;
+
+
+                <h:panelGroup rendered="#{transactionFlowBeanController.items.rowCount > 0}">
+
+                    <h:dataTable id="dataTable"
+
+                                 value="#{transactionFlowBeanController.items}" 
+                                 var="item" 
+                                 border="0" 
+                                 cellpadding="2" 
+                                 cellspacing="0" 
+                                 rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                 rules="all" 
+                                 style="border:solid 1px"
+                                 >
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionEntityTitle_id}"/>
+                            </f:facet>
+
+                            <h:graphicImage rendered="#{item.isError}"
+                                            library="images" 
+                                            name="error.jpeg"
+                                            styleClass="images"
+                                            class="error" 
+                                            title="Error"/>
+
+                            <h:graphicImage rendered="#{!item.isError}"
+                                            library="images" 
+                                            name="ok.jpeg" 
+                                            class="ok"  
+                                            title="Ok"/>
+
+
+                        </h:column>
+
+
+
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionEntityTitle_utcLocalTimeStamp}"/>
+                            </f:facet>
+                            <h:outputText value="#{transactionFlowBeanController.convertTime(item.utcLocalTimeStamp)}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionEntityTitle_applicationName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.applicationName}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionEntityTitle_transactionLogPointInfo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.transactionLogPointInfo}"/>
+                        </h:column>
+
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionEntityTitle_transactionReferenceID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.transactionReferenceID}"/>
+                        </h:column>
+
+
+
+
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle}"/>
+                            </f:facet>
+
+                            <h:commandLink action="#{transactionFlowBeanController.prepareLogDataView()}" 
+                                           value="#{bundle.EditTransactionEntityViewLink}"
+                                           rendered="#{!transactionFlowBeanController.isSelected(item.id)}"/>&nbsp;
+
+                            <h:commandLink action="#{transactionFlowBeanController.hideLogDataView()}" 
+                                           value="#{bundle.ListTransactionEntityDestroyLink}"
+                                           rendered="#{transactionFlowBeanController.isSelected(item.id)}"/>&nbsp;
+
+                            <h:dataTable value="#{item.transactionLogData}" 
+                                         rendered="#{transactionFlowBeanController.isSelected(item.id)}"
+                                         var="logData" 
+                                         border="0" 
+                                         cellpadding="2" 
+                                         cellspacing="0" 
+                                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                         rules="all" 
+                                         style="border:solid 1px">
+
+
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle_contentDescription}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{logData.contentDescription}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle_content}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{logData.content}"/>
+                                </h:column>
+
+
+
+                            </h:dataTable>
+
+                        </h:column>
+
+
+
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTransactionMetaInfoEntityTitle}"/>
+                            </f:facet>
+
+
+                            <h:commandLink action="#{transactionFlowBeanController.prepareLogDataView()}" 
+                                           value="#{bundle.EditTransactionEntityViewLink}"
+                                           rendered="#{!transactionFlowBeanController.isSelected(item.id)}"/>&nbsp;
+
+                            <h:commandLink action="#{transactionFlowBeanController.hideLogDataView()}" 
+                                           value="#{bundle.ListTransactionEntityDestroyLink}"
+                                           rendered="#{transactionFlowBeanController.isSelected(item.id)}"/>&nbsp;
+
+                            <h:dataTable value="#{item.transactionMetaInfo}" 
+                                         rendered="#{transactionFlowBeanController.isSelected(item.id)}"
+                                         var="metaInfo" 
+                                         border="0" 
+                                         cellpadding="2" 
+                                         cellspacing="0" 
+                                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                         rules="all" 
+                                         style="border:solid 1px">
+
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionMetaInfoEntityTitle_metaLabel}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{metaInfo.metaLabel}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{bundle.ListTransactionMetaInfoEntityTitle_metaValue}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{metaInfo.metaValue}"/>
+                                </h:column>
+
+
+
+                            </h:dataTable>
+
+                        </h:column>
+
+
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateTransactionLogDataEntityIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

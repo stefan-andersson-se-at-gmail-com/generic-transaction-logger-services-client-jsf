@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+
+        <h:panelGrid  class="panelGridOuter" columns="1" cellpadding="5">  
+
+            <h:panelGrid class="panelGridInner" columns="6"> 
+
+                <h:outputLabel value="UTC client time:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.convertTime(flowController.selected.utcLocalTimeStamp)}" />
+
+                <h:outputLabel value="UTC server time:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.convertTime(flowController.selected.utcServerTimeStamp)}" />
+
+                <h:outputLabel value="Transaction reference ID:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.transactionReferenceID}" />
+
+                <h:outputLabel value="Application name:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.applicationName}" />
+
+                <h:outputLabel value="Is error:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.isError}" />
+
+                <h:outputLabel value="Expired date:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.convertTime(flowController.selected.expiredDate)}" />
+
+            </h:panelGrid>
+
+
+
+            <h:dataTable value="#{flowController.selected.logMessageData}" 
+                         var="logData" 
+                         border="0" 
+                         cellpadding="2" 
+                         cellspacing="0" 
+                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                         columnClasses="jsfcrud_first_column,jsfcrud_second_column"
+                         rules="all" >
+
+
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle_contentDescription}"/>
+                    </f:facet>
+                    <h:outputText value="#{logData.contentDescription}" escape="true" class="wrap_text"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle_content}"/>
+                    </f:facet>
+                    <pre><h:outputText escape="true" value="#{flowController.decodeContent(logData)}" class="wrap_text"/></pre>
+                </h:column>
+
+            </h:dataTable>
+
+
+
+            <h:dataTable value="#{flowController.selected.logMessageMetaInfo}" 
+                         var="metaInfo" 
+                         border="0" 
+                         cellpadding="2" 
+                         cellspacing="0" 
+                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                         columnClasses="jsfcrud_first_column,jsfcrud_second_column"
+                         rules="all">
+
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.ListTransactionMetaInfoEntityTitle_metaLabel}"/>
+                    </f:facet>
+                    <h:outputText value="#{metaInfo.metaLabel}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.ListTransactionMetaInfoEntityTitle_metaValue}"/>
+                    </f:facet>
+                    <pre><h:outputText escape="true" value="#{metaInfo.metaValue}" class="wrap_text"/></pre>
+                </h:column>
+
+
+            </h:dataTable>
+
+        </h:panelGrid>
+
+    </ui:composition>
+</html>

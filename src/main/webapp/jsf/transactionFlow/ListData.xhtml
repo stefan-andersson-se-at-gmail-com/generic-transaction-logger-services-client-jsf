@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition >
+
+        <h:panelGrid  class="panelGridOuter" columns="1" cellpadding="5">  
+
+            <h:panelGrid class="panelGridInner" columns="6"> 
+
+                <h:outputLabel value="ID:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.id}" />
+
+
+                <h:outputLabel value="UTC client time:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.convertTime(flowController.selected.utcLocalTimeStamp)}" />
+
+                <h:outputLabel value="UTC server time:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.convertTime(flowController.selected.utcServerTimeStamp)}" />
+
+                <h:outputLabel value="Transaction reference ID:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.transactionReferenceID}" />
+
+                <h:outputLabel value="Application name:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.applicationName}" />
+
+                <h:outputLabel value="Is error:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.selected.isError}" />
+
+                <h:outputLabel value="Expired date:  " style="font-weight:bold" />    
+                <h:outputText value="#{flowController.convertTime(flowController.selected.expiredDate)}" />
+
+            </h:panelGrid>
+
+
+
+            <h:dataTable value="#{flowController.selected.getLogMessageData(flowController.getDefaultSearchableDatabases())}" 
+                         var="logData" 
+                         border="0" 
+                         cellpadding="2" 
+                         cellspacing="0" 
+                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                         columnClasses="jsfcrud_first_column,jsfcrud_second_column"
+                         rules="all" >
+
+
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle_contentDescription}"/>
+                    </f:facet>
+                    <h:outputText value="#{logData.label}" escape="true" class="wrap_text"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{bundle.ListTransactionLogDataEntityTitle_content}"/>
+                    </f:facet>
+
+                    <h:form id="fileDownLoadform" rendered="#{!flowController.hasContent(logData)}" class="fileDownLoadForm">  
+                        <p:commandLink id="downloadLink" 
+                                       ajax="false"
+                                       action="#{fileDownloadController.downloadLogMessageDataContent(flowController.selected, logData)}"
+                                       styleClass="fileDownLoadLink">  
+                            <span>
+                                <b>Download: #{logData.getContentSize()} Byte</b>
+                                <small>#{fileDownloadController.getDownloadLogMessageDataFileName(logMessageController.selected, logData)}</small>
+                            </span>
+                        </p:commandLink>  
+                    </h:form>  
+
+
+                    <pre><h:outputText rendered="#{flowController.hasContent(logData)}" 
+                                        escape="true" 
+                                        value="#{flowController.decodeContent(logData)}" class="wrap_text"/></pre>
+
+
+                </h:column>
+
+
+
+            </h:dataTable>
+
+
+
+
+        </h:panelGrid>
+
+    </ui:composition>
+</html>

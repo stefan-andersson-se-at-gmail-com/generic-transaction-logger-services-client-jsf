@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Transaction Statistics"></h:outputText>
+        </ui:define>
+
+        <ui:define name="search">
+
+
+            <div class="panelGridOuter">
+
+                <h:link outcome="/index" value="Back"/>
+
+                <h:form id="logMessageSearchForm" class="logMessageSearchForm">   
+
+
+                    <div class="panelGridInner">
+
+                        <p:outputPanel id="outputPanle_1">
+
+                            <table class="tableStaticTextSearch" >
+                                <tbody class="tableBodyStaticTextSearch">
+
+                                    <tr>
+
+                                        <td class="staticTextSearch_column_one">
+                                            <h:outputLabel value="View log from:  "  />    
+                                        </td>
+                                        <td> 
+                                            <h:inputText value="#{logMessageStatisticController.searchFromDate}" 
+                                                         styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+
+                                        </td>
+
+                                        <td class="staticTextSearch_column_two">
+                                            <h:outputLabel value=" to "  />    
+                                        </td>
+                                        <td> 
+                                            <h:inputText value="#{logMessageStatisticController.searchToDate}" 
+                                                         styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+                                        </td>
+
+
+                                    </tr>    
+                                    <tr>   
+
+                                        <td class="staticTextSearch_column_three">
+                                            <h:outputLabel value=" Application Name:"  />    
+                                        </td>
+                                        <td> 
+                                            <p:autoComplete id="acForceApplicationName" 
+                                                            forceSelection="true"
+                                                            dropdown="true"
+                                                            maxResults="250"
+                                                            scrollHeight="500"
+                                                            value="#{logMessageStatisticController.searchInApplicationName}"   
+                                                            completeMethod="#{logMessageStatisticController.completeApplicationName}"/>  
+                                        </td>
+
+                                        <td class="staticTextSearch_column_four">
+                                            <h:outputLabel value=" Flow Name:" />    
+                                        </td>
+                                        <td> 
+                                            <p:autoComplete id="acForceFlowName" 
+                                                            forceSelection="true"
+                                                            dropdown="true"
+                                                            maxResults="250"
+                                                            scrollHeight="500"
+                                                            value="#{logMessageStatisticController.searchInFlowName}"   
+                                                            completeMethod="#{logMessageStatisticController.completeFlowName}"/>  
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </p:outputPanel>
+
+
+                        <div class="payloadSpanIndicator">
+                            <h:outputLabel value="Search in payloads from : 0 Byte up to 2 Megabyte. Change 'Big payload text search options' for greater payload size span."/>
+                        </div>
+
+                        <p:outputPanel id="outputPanel_2">
+
+                            <table id="tableFreeTextSearch" class="tableFreeTextSearch">
+                                <tbody class="tableBodyFreeTextSearch">
+
+
+                                    <ui:repeat value="#{logMessageStatisticController.freeTextSearch.getIndexSequence()}" 
+                                               var="_index" 
+                                               varStatus="loop">
+
+                                        <tr class="tdFreeTextSearch">
+
+                                            <td class="freeTextSearch_column_one">
+
+
+                                                <h:outputLabel value=" Payload text search:" 
+                                                               rendered="#{loop.first}"/>
+
+
+                                                <h:outputLabel value="       AND        "                                                                
+                                                               rendered="#{!loop.first}"/>
+                                            </td>
+
+                                            <td class="freeTextSearch_column_two">
+
+
+
+                                                <p:commandLink  action="#{logMessageStatisticController.freeTextSearch.addTextField}"
+                                                                rendered="#{loop.first}"
+                                                                update=":logMessageSearchForm:outputPanel_2">
+                                                    <h:graphicImage library="images" 
+                                                                    name="add.png"
+                                                                    class="imgFreeTextSearch"
+                                                                    title="Add"
+                                                                    />
+                                                </p:commandLink>
+
+
+
+
+                                                <p:commandLink  rendered="#{!loop.first}"
+                                                                actionListener="#{logMessageStatisticController.freeTextSearch.removeTextField}"
+                                                                update=":logMessageSearchForm:outputPanel_2">
+                                                    <f:attribute name="index" value="#{loop.index}" />
+                                                    <h:graphicImage library="images" 
+                                                                    name="remove.png"  
+                                                                    class="imgFreeTextSearch"
+                                                                    title="Delete"/>
+
+                                                </p:commandLink>
+                                            </td>
+
+                                            <td class="freeTextSearch_column_three">
+
+                                                <h:inputText id="freeText#{loop.index}"
+                                                             value="#{logMessageStatisticController.freeTextSearch.getStringWrapper(_index).content}"
+                                                             styleClass="inputFreeTextSearch ui-autocomplete-input ui-widget ui-state-default ui-corner-all"/>
+                                            </td>
+
+
+                                        </tr>     
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </p:outputPanel>
+
+                    </div>
+
+
+
+
+                    <div class="optionalPanelGridInner">
+                        <ul id="searchOptionPanel" class="searchOptionPanel">
+
+                            <li>
+                                <h:commandButton id="submitSearchButton" 
+                                                 value="Search" 
+                                                 action="#{logMessageStatisticController.search()}" 
+                                                 class="ui-corner-all ui-widget-header"
+                                                 >
+                                </h:commandButton>
+                            </li>
+                            <li>
+                                <h:commandButton id="clearSearchFieldsButton" 
+                                                 value="Clear" 
+                                                 action="#{logMessageStatisticController.clearSearchFields()}"
+
+                                                 class="ui-corner-all ui-widget-header">
+                                </h:commandButton>
+                            </li>
+                            <li>
+                                <p:selectCheckboxMenu value="#{logMessageStatisticController.dataBaseSearchController.selectedDatabases}" 
+                                                      label="Big payload text search options" 
+                                                      filter="true" 
+                                                      scrollHeight="200" 
+                                                      filterFunction="Filter" 
+                                                      filterMatchMode="startsWith" 
+                                                      >  
+                                    <f:selectItems value="#{logMessageStatisticController.dataBaseSearchController.databases}" />  
+                                </p:selectCheckboxMenu>  
+                            </li>
+                            <li>
+                                <h:selectOneRadio id="options" value="#{logMessageStatisticController.selectedOption}" onclick="submit()">  
+                                    <f:selectItem itemLabel="List All" itemValue="1" />  
+                                    <f:selectItem itemLabel="List Error" itemValue="2" />  
+                                    <f:selectItem itemLabel="List Success" itemValue="3" />  
+                                </h:selectOneRadio> 
+                            </li>
+                        </ul>   
+                    </div>
+
+
+
+                </h:form> 
+
+
+            </div>
+        </ui:define>
+
+
+        <ui:define name="body">
+
+            <h:panelGrid id="logMessagePanelGrid" class="panelGridOuter">
+                <h:form id="logMessageListForm" class="jsfcrud_list_form">
+
+                    <h:outputText escape="false" value="#{bundle.ListTransactionEntityEmpty}" rendered="#{logMessageStatisticController.items.rowCount == 0}"/>
+
+                    <h:outputText 
+                        rendered="#{logMessageStatisticController.pagination.itemsCount == 5000}"
+                        value="#{logMessageStatisticController.pagination.pageFirstItem + 1}..#{logMessageStatisticController.pagination.pageLastItem + 1}/#{logMessageStatisticController.pagination.itemsCount} (Max result)"/>&nbsp;
+
+                    <h:outputText 
+                        rendered="#{logMessageStatisticController.pagination.itemsCount != 5000}"
+                        value="#{logMessageStatisticController.pagination.pageFirstItem + 1}..#{logMessageStatisticController.pagination.pageLastItem + 1}/#{logMessageStatisticController.pagination.itemsCount}"/>&nbsp;
+
+                    <h:commandLink action="#{logMessageStatisticController.previous}" value="#{bundle.Previous} #{logMessageStatisticController.pagination.pageSize}" rendered="#{logMessageStatisticController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{logMessageStatisticController.next}" value="#{bundle.Next} #{logMessageStatisticController.pagination.pageSize}" rendered="#{logMessageStatisticController.pagination.hasNextPage}"/>&nbsp;
+
+
+                    <h:panelGroup id="logmessages_view" rendered="#{logMessageStatisticController.items.rowCount > 0}" >
+
+                        <h:dataTable id="logMessageTable"
+                                     value="#{logMessageStatisticController.items}" 
+                                     var="item" 
+                                     border="0" 
+                                     cellpadding="2" 
+                                     cellspacing="0" 
+                                     rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                     rules="all" >
+
+                         
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundle.ListTransactionEntityTitle_applicationName}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.applicationName}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Number of transaction(s)"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numberOfTransactions}"/>
+                            </p:column>
+
+                            
+                            
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Number of message(s)"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numberOfMessages}"/>
+                            </p:column>
+
+                            
+                            
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Number of success"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numberOfSuccess}"/>
+                            </p:column>
+                            
+                            
+                            
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Number of error"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numberOfError}"/>
+                            </p:column>
+                            
+                        </h:dataTable>
+                    </h:panelGroup>
+                    <br />
+
+                    <br />
+                    <br />
+                    <h:link outcome="/index" value="Back"/>
+
+                </h:form>
+
+
+           
+
+            </h:panelGrid>
+
+        </ui:define>
+    </ui:composition>
+</html>

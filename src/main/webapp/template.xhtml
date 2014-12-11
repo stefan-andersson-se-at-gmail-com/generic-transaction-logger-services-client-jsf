@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+        <h:outputStylesheet name="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+
+        <script type="text/javascript" src="../../js/Point.js"></script>
+        <script type="text/javascript" src="../../js/Node.js"></script>
+        <script type="text/javascript" src="../../js/Edge.js"></script>
+        <script type="text/javascript" src="../../js/Graph.js"></script>
+        <script type="text/javascript" src="../../js/GraphLayout.js"></script>
+        <script type="text/javascript" src="../../js/GraphRender.js"></script>
+        <script type="text/javascript" src="../../js/raphael-min.js"></script>
+        <script type="text/javascript" src="../../js/dracula_graffle.js"></script>
+        <script type="text/javascript" src="../../js/json2.js"></script>
+        <script language="javascript" type="text/javascript">//<![CDATA[
+
+
+
+
+            jQuery(document).ready(function() {
+
+                // Get all canvas ids
+                var canvas_ids = $("[id^=canvas_]")
+                        .map(function() {
+                            return this.id.replace(/:/g, "\\:");
+                        }).get();
+                /*for (i in canvas_ids) {
+                 alert(canvas_ids[i]);
+                 }*/
+
+                // Get all json ids
+                var json_ids = $("[id*=json_data_]")
+                        .map(function() {
+                            return '#' + this.id.replace(/:/g, "\\:");
+                        }).get();
+                /*for (var i = 0; i < json_ids.length; i++) {
+                 alert(json_ids[i]);
+                 }*/
+
+                // Create g        
+                for (var i = 0; i < json_ids.length; i++) {
+                    var canvas_id = canvas_ids[i];
+                    // prepare g
+                    var width = 600;
+                    var height = 200;
+                    var graph = new Graph();
+                    // parse data to json obj
+                    var json_id = json_ids[i];
+                    var json_text = $(json_id).text();
+                    var json_obj = JSON.parse(json_text);
+                    // nodes
+                    for (var j = 0; j < json_obj.nodes.length; j++) {
+                        //alert(json_obj.nodes[j].id);
+                        //addNode(json_obj.nodes[j].key, g);
+                        //alert(json_obj.nodes);
+                        var node_key = undefined;
+                        var node_name = undefined;
+                        node_key = json_obj.nodes[j].id;
+                        node_name = json_obj.nodes[j].name;
+                        var logMessageId = undefined;
+                        var isError = undefined;
+                        if (json_obj.nodes[j].logMessages.length != 0) {
+                            logMessageId = json_obj.nodes[j].logMessages[0].id;
+                            isError = json_obj.nodes[j].logMessages[0].isError;
+                        }
+                        graph.addNode(new Node(node_key, node_name, logMessageId, isError));
+                    }
+
+                    // edges
+
+                    for (var k = 0; k < json_obj.edges.length; k++) {
+                        //alert(json_obj.edges[k].from + "," + json_obj.edges[k].to);
+                        //addEdge(json_obj.edges[k].from, json_obj.edges[k].to, g);
+                        var edge_id = undefined;
+                        var edge_from = undefined;
+                        var edge_to = undefined;
+                        edge_id = json_obj.edges[k].id;
+                        edge_from = graph.getNode(json_obj.edges[k].from);
+                        edge_to = graph.getNode(json_obj.edges[k].to);
+                        if (edge_from != undefined && edge_to != undefined) {
+                            graph.addEdge(new Edge(edge_id, edge_from, edge_to));
+                        } else {
+                            //log('Edge not in graph! FromNode=[ ' + json_obj.edges[k].from + ' ] ToNode=[ ' + json_obj.edges[k].to + ' ]');
+                        }
+                    }
+
+
+
+                    //draw 
+                    var layouter = new Graph.Layout.FlowTree(graph);
+                    layouter.layout();
+                    var paper = new Raphael(canvas_id, width, height);
+                    //
+                    var renderer = new Graph.Renderer.FlowTree(paper, graph);
+                    renderer.draw();
+                }
+
+
+            }
+            );
+            //]]></script>
+
+
+    </h:head>
+
+    <h:body>
+        <div class="wrapper">
+            <h1 style="text-align:center;" > 
+                <ui:insert name="title">Default Title</ui:insert>
+
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" 
+                                infoStyle="color: green" 
+                                layout="table" 
+                                rendered="#{userAgentController.processUserAgent}"/>
+                </h:panelGroup>
+
+            </h1>
+            <p>
+                <ui:insert name="search">Default Form</ui:insert>
+            </p>
+            <p>
+                <ui:insert name="body">Default Body</ui:insert>
+            </p>
+        </div>
+    </h:body>
+
+</html>

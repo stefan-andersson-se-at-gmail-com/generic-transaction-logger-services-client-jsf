@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.FlowDevTitle}"></h:outputText>
+        </ui:define>
+
+
+        <ui:define name="search">
+
+
+            <div class="panelGridOuter">
+
+                <h:link outcome="/index" value="Back"/>
+
+                <h:form id="logMessageSearchForm" class="logMessageSearchForm">   
+
+                    <h:panelGrid class="panelGridInner" columns="4" id="searchPanel_2" width="50%">
+
+                        <h:outputLabel value="View log from:  " style="font-weight:bold" />    
+                        <h:inputText value="#{flowController.searchFromDate}" 
+                                     styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+
+                        <h:outputLabel value=" to " style="font-weight:bold" />    
+                        <h:inputText value="#{flowController.searchToDate}" 
+                                     styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+
+                        <h:outputLabel value=" Application Name:" style="font-weight:bold" />    
+                        <p:autoComplete id="acForceApplicationName" 
+                                        forceSelection="true"   
+                                        value="#{flowController.searchInApplicationName}"   
+                                        completeMethod="#{flowController.completeApplicationName}"/>  
+
+                        <h:outputLabel value=" Flow Name:" style="font-weight:bold" />    
+                        <p:autoComplete id="acForceFlowName" 
+                                        forceSelection="true"   
+                                        value="#{flowController.searchInFlowName}"   
+                                        completeMethod="#{flowController.completeFlowName}"/>  
+
+
+                        <h:outputLabel value=" Flow Point Name:" style="font-weight:bold" />    
+                        <p:autoComplete id="acForceFlowPointName" 
+                                        forceSelection="true"   
+                                        value="#{flowController.searchInFlowPointName}"   
+                                        completeMethod="#{flowController.completeFlowPointName}"/>  
+
+
+                        <h:outputLabel value=" Free text:" style="font-weight:bold" />    
+                        <h:inputText value="#{flowController.searchFreeText}" 
+                                     styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+
+
+
+                    </h:panelGrid>
+
+                    <div class="optionalPanelGridInner">
+                        <ul id="searchOptionPanel" class="searchOptionPanel">
+                            <li>
+                                <h:commandButton id="submitSearchButton" value="Search" action="#{flowController.search}" />
+                            </li>
+                            <li>
+                                <h:commandButton id="clearSearchFieldsButton" value="Clear" action="#{flowController.clearSearchFields}"/>
+                            </li>
+                            <li>
+                                <h:selectOneRadio id="options" value="#{flowController.selectedOption}" onclick="submit()">  
+                                    <f:selectItem itemLabel="List All" itemValue="1" />  
+                                    <f:selectItem itemLabel="List Error" itemValue="2" />  
+                                    <f:selectItem itemLabel="List Success" itemValue="3" />  
+                                </h:selectOneRadio> 
+                            </li>
+                        </ul>   
+                    </div>
+
+
+                </h:form>    
+            </div>
+        </ui:define>
+
+
+
+
+        <ui:define name="body">
+
+            <h:form id="node_click_form" style="display: none">
+                <h:inputHidden id="selected_logMessage_id" value="#{flowController.logMessageId}" />
+                <p:commandLink id="submit_node_data" 
+                               styleClass="notSelectedLink"
+                               action="#{flowController.submitNodeClick()}" 
+                               value=""
+                               update=":logMsgDetail"
+                               oncomplete="PF('logMessageDataDialog').show()">
+
+                </p:commandLink>
+
+            </h:form> 
+
+
+
+            <h:panelGrid id="logMessagePanelGrid" class="panelGridOuter"> 
+                <h:form id="flowPointForm" styleClass="jsfcrud_list_form">
+                    
+                    <h:outputText escape="false" value="#{bundle.ListTransactionEntityEmpty}" rendered="#{flowController.items.rowCount == 0}"/>
+                   
+
+                    <h:outputText value="#{flowController.pagination.pageFirstItem + 1}..#{flowController.pagination.pageLastItem + 1}/#{flowController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{flowController.previous}" value="#{bundle.Previous} #{flowController.pagination.pageSize}" rendered="#{flowController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{flowController.next}" value="#{bundle.Next} #{flowController.pagination.pageSize}" rendered="#{flowController.pagination.hasNextPage}"/>&nbsp;
+
+
+
+                    <h:panelGroup id="logmessages_view" rendered="#{flowController.items.rowCount > 0}" >
+
+                        <h:dataTable id="dataTable"
+
+                                     value="#{flowController.items}" 
+                                     var="item" 
+                                     border="0" 
+                                     cellpadding="2" 
+                                     cellspacing="0" 
+                                     rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                     rules="all" 
+                                     style="border:solid 1px"
+                                     >
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Flow Name : "/>
+                                </f:facet> 
+
+
+                                <h:panelGrid id="itemFlowPanelGrid" columns="1">
+                                    <h:outputText id="itemFlowName" value="#{item.flowConfiguration.flowName}" />
+                                    <h:outputText id="itemFloDescription" value="#{item.flowConfiguration.flowDescription}" />
+                                </h:panelGrid>
+                            </h:column>
+
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Transaction Flow : "/>
+                                </f:facet>
+
+                                <h:outputText id="json_data_" value="#{item.toJSONString()}" style="display: none"/>   
+                                <div id="#{item.canvasId}"/>
+                            </h:column>
+
+
+                        </h:dataTable>
+                    </h:panelGroup>
+                    <br />
+
+                    <br />
+                    <br />
+                    <h:link outcome="/index" value="Back"/>
+                </h:form>
+
+
+
+
+                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                <!-- Show selected logMessage. Iff dialog not contains "dynamic="true"-->
+                <!-- dialog frame is empty.                                           -->
+                <p:outputPanel styleClass="dialogPanel">
+                    <p:dialog header="Log Message Details" dynamic="true" appendTo="@(body)" closeOnEscape="true" width="95%" height="800" widgetVar="logMessageDataDialog" modal="true" resizable="true">  
+                        <p:outputPanel id="logMsgDetail">
+                            <ui:include src="ListData.xhtml"/>
+                        </p:outputPanel>
+                    </p:dialog>  
+                </p:outputPanel>
+
+            </h:panelGrid>
+
+        </ui:define>
+    </ui:composition>
+
+
+    <f:facet name="last">
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+        <h:outputStylesheet name="css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/main.css" />
+    </f:facet> 
+</html>
