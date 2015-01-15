@@ -95,6 +95,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 //        this.getLogger().log(Level.SEVERE, "getItems() 'items == null'=[" + (items == null) + "]");
 
         if (items == null) {
+
             items = getPagination().createPageDataModel();
 
         }
@@ -189,6 +190,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                             freeTextSearch,
                             dataBaseSearchController,
                             viewError));
+
                     return list;
 
                 }
@@ -232,7 +234,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public String prepareLogView(LogMessage item) {
-//        this.getLogger().log(Level.SEVERE, "prepareLogView(LogMessage item)");
+        this.getLogger().log(Level.SEVERE, "prepareLogView(LogMessage item)");
 
         this.setSearchInTransactionReferenceId(item.getTransactionReferenceID());
         this.items = null;
@@ -337,7 +339,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void setSearchInTransactionReferenceId(String transactionReferenceId) {
-        this.transactionReferenceId = transactionReferenceId;
+       this.transactionReferenceId = transactionReferenceId;
     }
 
     public String getSearchInApplicationName() {
@@ -393,9 +395,10 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void clearSearchFields() {
-        applicationName = "";
+
         flowName = "";
         flowPointName = "";
+        applicationName = "";
         transactionReferenceId = "";
         this.freeTextSearch = new FreeTextSearchController();
         this.search();
@@ -428,8 +431,10 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     public void search() {
 //        this.getLogger().log(Level.SEVERE, "search()");
+        current = null;
         logMsgDetailView = false;
         render_response_done = false;
+        transactionReferenceId = "";
         recreateModel();
     }
 
