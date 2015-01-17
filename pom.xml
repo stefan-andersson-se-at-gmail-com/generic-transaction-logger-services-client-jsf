@@ -12,8 +12,9 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.license>gpl30</netbeans.hint.license>
+        <log.message.services.backend.version>1.7-SNAPSHOT</log.message.services.backend.version>
     </properties>
-
+    
     <!-- Git --> 
     <scm>
         <url>https://github.com/stefan-andersson-se-at-gmail-com/generic-transaction-logger-services-client-jsf.git</url>
@@ -31,14 +32,42 @@
     </distributionManagement>
 
 
-
+ 
     <dependencies>
-        <dependency>
+         <dependency>
             <groupId>com.erbjuder.logger</groupId>
             <artifactId>log_message_services_backend</artifactId>
-            <version>1.6</version>
+            <version>${log.message.services.backend.version}</version>
             <type>jar</type>
         </dependency>
+<!--        <dependency>
+            <groupId>com.erbjuder.logger</groupId>
+            <artifactId>log_message_services_backend-Dev</artifactId>
+            <version>${log.message.services.backend.version}</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.erbjuder.logger</groupId>
+            <artifactId>log_message_services_backend-Test</artifactId>
+            <version>${log.message.services.backend.version}</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.erbjuder.logger</groupId>
+            <artifactId>log_message_services_backend-QA</artifactId>
+            <version>${log.message.services.backend.version}</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.erbjuder.logger</groupId>
+            <artifactId>log_message_services_backend-Prod</artifactId>
+            <version>${log.message.services.backend.version}</version>
+            <type>jar</type>
+        </dependency>-->
+        
         
         <dependency>
             <groupId>javax</groupId>
@@ -141,19 +170,218 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Unpack "maven-war-plugin" file                       -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR</targetPath>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}.war</file>
                                     <unpack>true</unpack>
                                     <failIfNotFound>false</failIfNotFound>
-                                </resource>-->
+                                </resource>
                                 
-                               
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV</targetPath>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}.war</file>
+                                    <unpack>true</unpack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST</targetPath>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}.war</file>
+                                    <unpack>true</unpack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA</targetPath>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}.war</file>
+                                    <unpack>true</unpack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD</targetPath>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}.war</file>
+                                    <unpack>true</unpack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                
+                                
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <!-- Remove invalid dependency                            -->
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <resource>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV/WEB-INF/lib</directory>
+                                    <include>**\*log_message_services_backend*</include>
+                                    <clean>true</clean>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST/WEB-INF/lib</directory>
+                                    <include>**\*log_message_services_backend*</include>
+                                    <clean>true</clean>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA/WEB-INF/lib</directory>
+                                    <include>**\*log_message_services_backend*</include>
+                                    <clean>true</clean>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD/WEB-INF/lib</directory>
+                                    <include>**\*log_message_services_backend*</include>
+                                    <clean>true</clean>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                
+                                
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <!-- Add new environment dependency                       -->
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV/WEB-INF/lib</targetPath>
+                                    <dependency>
+                                        <groupId>com.erbjuder.logger</groupId>
+                                        <artifactId>log_message_services_backend-Dev</artifactId>
+                                        <version>${log.message.services.backend.version}</version>
+                                        <type>jar</type>
+                                    </dependency>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST/WEB-INF/lib</targetPath>
+                                    <dependency>
+                                        <groupId>com.erbjuder.logger</groupId>
+                                        <artifactId>log_message_services_backend-Test</artifactId>
+                                        <version>${log.message.services.backend.version}</version>
+                                        <type>jar</type>
+                                    </dependency>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA/WEB-INF/lib</targetPath>
+                                    <dependency>
+                                        <groupId>com.erbjuder.logger</groupId>
+                                        <artifactId>log_message_services_backend-QA</artifactId>
+                                        <version>${log.message.services.backend.version}</version>
+                                        <type>jar</type>
+                                    </dependency>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD/WEB-INF/lib</targetPath>
+                                    <dependency>
+                                        <groupId>com.erbjuder.logger</groupId>
+                                        <artifactId>log_message_services_backend-Prod</artifactId>
+                                        <version>${log.message.services.backend.version}</version>
+                                        <type>jar</type>
+                                    </dependency>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                
+                                
+                                
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <!-- Copy and replace environment "CSS"                   -->
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <resource>
+                                    <destFileName>main.css</destFileName>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV/resources/css/</targetPath>
+                                    <file>src/main/webapp/resources/css/mainDev.css</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <destFileName>main.css</destFileName>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST/resources/css/</targetPath>
+                                    <file>src/main/webapp/resources/css/mainTest.css</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <destFileName>main.css</destFileName>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA/resources/css/</targetPath>
+                                    <file>src/main/webapp/resources/css/mainQA.css</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <destFileName>main.css</destFileName>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD/resources/css/</targetPath>
+                                    <file>src/main/webapp/resources/css/mainProd.css</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                
+                                
+                                
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <!-- Create final WAR archive and attach it as Maven artifact -->
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}.war</targetPath>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR</directory>
+                                    <pack>true</pack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-Dev.war</targetPath>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV</directory>
+                                    <pack>true</pack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-Test.war</targetPath>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST</directory>
+                                    <pack>true</pack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-QA.war</targetPath>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA</directory>
+                                    <pack>true</pack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-Prod.war</targetPath>
+                                    <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD</directory>
+                                    <pack>true</pack>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+
+
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <!-- Deploye                                              -->
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <resource>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}-Dev.war</file>  
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
+                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
+                                </resource>
+                                <resource>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}-Test.war</file>  
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
+                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
+                                </resource>
+                                <resource>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}-QA.war</file>  
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
+                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
+                                </resource>
+                                <resource>
+                                    <file>${basedir}/target/${project.artifactId}-${project.version}-Prod.war</file>  
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
+                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
+                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
+                                </resource>
+
+
+                                  
                                 
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Copy "resources"                                     -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <!--                                <resource>
                                     <directory>src/main/resources</directory>                      
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR/WEB-INF/classes</targetPath>
                                     <preservePath>true</preservePath>
@@ -164,7 +392,7 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Copy "wsdl"                                          -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <!--                                <resource>
                                     <directory>src/main/wsdl</directory>                      
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR/WEB-INF/wsdl</targetPath>
                                     <preservePath>true</preservePath>
@@ -176,7 +404,7 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Create final archive and attach it as Maven artifact -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <!--                                <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}.war</targetPath>
                                     <directory>${basedir}/target/${project.artifactId}-${project.version}-WAR</directory>
                                     <pack>true</pack>
@@ -187,21 +415,21 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Deploye                                                -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                                <resource>
-                                    <file>${basedir}/target/${project.artifactId}-${project.version}.war</file>  
-                                    <!--                                <targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>               
-                                    <targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
-                                    <targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
-                                    <!--<targetPath>/home/server-1/Programs/glassfish-4.1/glassfish/domains/domain1/autodeploy</targetPath>-->
-                                    <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
+                                <!--                                <resource>-->
+                                <!--<file>${basedir}/target/${project.artifactId}-${project.version}.war</file>-->  
+                                <!--                                <targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>               
+                                <targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
+                                <targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                <!--<targetPath>/home/server-1/Programs/glassfish-4.1/glassfish/domains/domain1/autodeploy</targetPath>-->
+                                <!--<targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
                                 
-                                </resource>
+                                <!--</resource>-->
                                 
                                 
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Unpack "maven-jar-plugin" file                       -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <!--                                <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-JAR</targetPath>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}.jar</file>
                                     <unpack>true</unpack>
@@ -213,7 +441,7 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Unpack "dependency-jar" files from WAR to JAR        -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <!--                                <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-JAR</targetPath>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}-WAR/WEB-INF/lib/*.jar</file>
                                     <unpack>true</unpack>
@@ -226,7 +454,7 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Create final archive and attach it as Maven artifact -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                <resource>
+                                <!--                                <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}.jar</targetPath>
                                     <directory>${basedir}/target/${project.artifactId}-${project.version}-JAR</directory>
                                     <pack>true</pack>
