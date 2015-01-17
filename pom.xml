@@ -12,7 +12,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.license>gpl30</netbeans.hint.license>
-        <log.message.services.backend.version>1.7-SNAPSHOT</log.message.services.backend.version>
+        <log.message.services.backend.version>1.7</log.message.services.backend.version>
     </properties>
     
     <!-- Git --> 
@@ -235,6 +235,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
 
 
 
