@@ -42,12 +42,12 @@
         </dependency>
         
         <!-- By includeing this all SAOP services will be gone -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.erbjuder.logger</groupId>
             <artifactId>log_message_client</artifactId>
             <version>1.7-SNAPSHOT</version>
             <type>jar</type>
-        </dependency>
+        </dependency>-->
         
        
         <dependency>
