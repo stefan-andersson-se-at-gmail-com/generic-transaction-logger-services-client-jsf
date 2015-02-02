@@ -186,6 +186,15 @@
                                 </h:commandButton>
                             </li>
                             <li>
+                                <h:commandButton id="addLogMessageDataFieldsButton" 
+                                                 value="AddData" 
+                                                 action="#{logMessageController.addLogMessageData()}"
+
+                                                 class="ui-corner-all ui-widget-header">
+                                </h:commandButton>
+                            </li>
+                             
+                            <li>
                                 <p:selectCheckboxMenu value="#{logMessageController.dataBaseSearchController.selectedDatabases}" 
                                                       label="Big payload text search options" 
                                                       filter="true" 
@@ -378,7 +387,7 @@
                 <!-- Show selected logMessage. Iff dialog not contains "dynamic="true"-->
                 <!-- dialog frame is empty.                                           -->
                 <p:outputPanel styleClass="dialogPanel">
-                    <p:dialog header="Log Message Details" dynamic="true" appendTo="@(body)" closeOnEscape="true" width="95%" height="800" widgetVar="logMessageDataDialog" modal="true" resizable="true">  
+                    <p:dialog header="Log Message Details" dynamic="true" appendTo="@(body)" closeOnEscape="true" width="95%" height="800" widgetVar="logMessageDataDialog" resizable="true">  
                         <p:outputPanel id="logMsgDetail">
                             <ui:include src="ListData.xhtml"/>
                         </p:outputPanel>
