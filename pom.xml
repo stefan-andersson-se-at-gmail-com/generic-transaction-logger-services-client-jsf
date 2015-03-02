@@ -42,12 +42,12 @@
         </dependency>
         
         <!-- By includeing this all SAOP services will be gone -->
-<!--        <dependency>
+        <dependency>
             <groupId>com.erbjuder.logger</groupId>
             <artifactId>log_message_client</artifactId>
             <version>1.7-SNAPSHOT</version>
             <type>jar</type>
-        </dependency>-->
+        </dependency>
         
        
         <dependency>
@@ -380,6 +380,29 @@
                                     <failIfNotFound>false</failIfNotFound>
                                 </resource>
                                 
+                                  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <!-- Copy and replace environment "logger.propperties       -->
+                                <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV/WEB-INF/classes</targetPath>
+                                    <file>src/main/environment/dev/loggger.properties</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST/WEB-INF/classes</targetPath>
+                                    <file>src/main/environment/test/loggger.properties</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA/WEB-INF/classes</targetPath>
+                                    <file>src/main/environment/qa/loggger.properties</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
+                                <resource>
+                                    <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD/WEB-INF/classes</targetPath>
+                                    <file>src/main/environment/prod/loggger.properties</file>
+                                    <failIfNotFound>false</failIfNotFound>
+                                </resource>
                                 
                                 
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -420,34 +443,34 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <!-- Deploye                                              -->
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-                                <resource>
+<!--                                <resource>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}-Dev.war</file>  
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
-                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>               
+                                    <targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>
                                     <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
                                 </resource>
                                 <resource>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}-Test.war</file>  
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
-                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>               
+                                    <targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>
                                     <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
                                 </resource>
                                 <resource>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}-QA.war</file>  
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
-                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>               
+                                    <targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>
                                     <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
                                 </resource>
                                 <resource>
                                     <file>${basedir}/target/${project.artifactId}-${project.version}-Prod.war</file>  
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->               
-                                    <!--<targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>-->
-                                    <!--<targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>-->
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2-ce-ga2_with_G-Fish-4.1_named_as_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>               
+                                    <targetPath>/home/adminuser/local/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>
+                                    <targetPath>/home/adminuser/local/liferay-portal-6.2.0/glassfish-4.0/deploy</targetPath>
                                     <targetPath>/home/server-1/Portal/portal-6.2-ce-ga2_with_gfish_4.1_b13-12_named_3.1.2.2/glassfish-3.1.2.2/glassfish/domains/domain1/autodeploy</targetPath>       
-                                </resource>
+                                </resource>-->
 
 
                    

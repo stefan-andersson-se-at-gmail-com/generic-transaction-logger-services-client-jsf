@@ -171,63 +171,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                 @Override
                 public DataModel createPageDataModel() {
 
-//                    LogMessageContainer container = new LogMessageContainerImpl();
-//                    container.setApplicationName("generic-transaction-logger-demo");
-//               
-//                    com.erbjuder.logger.client.logmessage.impl.LogMessageImpl logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();                    
-//                    logMessage.setIsErrorType(false);
-//                    logMessage.setFlow("jsf-flow", "start");
-//                    logMessage.setAbstractDescription("Framwork Example");
-//                    logMessage.setDescription("Example of how to use this framework inside of Java code");
-//                    logMessage.addContent("HTML", MimeTypes.BASE64, Base64.encode("<Html><Head></Head><body>Example 2</body></Html>".getBytes()));
-//                    container.addLogMessage(logMessage);
-//
-//                    logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-//                    logMessage.setIsErrorType(false);
-//                    logMessage.setAbstractDescription("Framwork Example");
-//                    logMessage.setDescription("System environment data");
-//                    Map<String, String> map = System.getenv();
-//                    if (map != null) {
-//                        logMessage.addContent("System environment size", MimeTypes.PLAIN_TEXT, "" + map.size());
-//                        for (String key : map.keySet()) {
-//                            logMessage.addContent(key, MimeTypes.PLAIN_TEXT, map.get(key));
-//                        }
-//                    }
-//                    container.addLogMessage(logMessage);
-//
-//                    logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-//                    logMessage.setIsErrorType(false);
-//                    logMessage.setAbstractDescription("Framwork Example");
-//                    logMessage.setDescription("System properties");
-//                    Properties properties = System.getProperties();
-//                    if (properties != null) {
-//                        logMessage.addContent("System properties size", MimeTypes.PLAIN_TEXT, "" + properties.size());
-//                        for (Entry<Object, Object> entry : properties.entrySet()) {
-//                            logMessage.addContent(entry.getKey().toString(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
-//                        }
-//                    }
-//                    container.addLogMessage(logMessage);
-//
-//                    logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-//                    logMessage.setIsErrorType(false);
-//                    logMessage.setAbstractDescription("Framwork Example");
-//                    logMessage.setDescription("FacesContext externalContext");
-//                    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-//                    if (externalContext != null) {
-//                        Map<String, Object> sessionMap = externalContext.getSessionMap();
-//                        if (sessionMap != null) {
-//                            for (Entry<String, Object> entry : sessionMap.entrySet()) {
-//                                logMessage.addContent(entry.getKey(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
-//                            }
-//                        }
-//                    }
-//                    logMessage.setFlow("jsf-flow", "end");
-//                    container.addLogMessage(logMessage);
-//
-////                       
-//                    getLogger().log(Level.SEVERE, "LOGGER [ " + container.getLogMessages().size() + " ] ");
-//                    new LogWriterFacade().write(container);
-
                     //getLogger().log(Level.SEVERE, "createPageDataModel()");
                     Boolean viewError = null;
                     if (selectedOption == 2) {
@@ -488,11 +431,109 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     public void search() {
 //        this.getLogger().log(Level.SEVERE, "search()");
+
         current = null;
         logMsgDetailView = false;
         render_response_done = false;
         transactionReferenceId = "";
         recreateModel();
     }
+
+//    public void addLogMessageData() {
+//
+//        LogMessageContainer container = new LogMessageContainerImpl();
+//        container.setApplicationName("generic-transaction-logger-demo");
+//
+//        com.erbjuder.logger.client.logmessage.impl.LogMessageImpl logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
+//        logMessage.setIsErrorType(false);
+//        logMessage.setFlow("jsf-flow", "start");
+//        logMessage.setAbstractDescription("Framwork Example");
+//        logMessage.setDescription("Example of how to use this framework inside of Java code");
+//        logMessage.addContent("HTML", MimeTypes.BASE64, Base64.encode("<Html><Head></Head><body>Example 2</body></Html>".getBytes()));
+//        container.addLogMessage(logMessage);
+//
+//        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
+//        logMessage.setIsErrorType(false);
+//        logMessage.setAbstractDescription("Framwork Example");
+//        logMessage.setDescription("System environment data");
+//        Map<String, String> map = System.getenv();
+//        if (map != null) {
+//            logMessage.addContent("System environment size", MimeTypes.PLAIN_TEXT, "" + map.size());
+//            for (String key : map.keySet()) {
+//                logMessage.addContent(key, MimeTypes.PLAIN_TEXT, map.get(key));
+//            }
+//        }
+//        container.addLogMessage(logMessage);
+//
+//        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
+//        logMessage.setIsErrorType(false);
+//        logMessage.setAbstractDescription("Framwork Example");
+//        logMessage.setDescription("System properties");
+//        Properties properties = System.getProperties();
+//        if (properties != null) {
+//            logMessage.addContent("System properties size", MimeTypes.PLAIN_TEXT, "" + properties.size());
+//            for (Entry<Object, Object> entry : properties.entrySet()) {
+//                logMessage.addContent(entry.getKey().toString(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
+//            }
+//        }
+//        container.addLogMessage(logMessage);
+//
+//        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
+//        logMessage.setIsErrorType(false);
+//        logMessage.setAbstractDescription("Framwork Example");
+//        logMessage.setDescription("FacesContext externalContext SessionMap");
+//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//        if (externalContext != null) {
+//            Map<String, Object> sessionMap = externalContext.getSessionMap();
+//            if (sessionMap != null) {
+//                for (Entry<String, Object> entry : sessionMap.entrySet()) {
+//                    logMessage.addContent(entry.getKey(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
+//                }
+//            }
+//        }
+//        container.addLogMessage(logMessage);
+//
+//        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
+//        logMessage.setIsErrorType(false);
+//        logMessage.setAbstractDescription("Framwork Example");
+//        logMessage.setDescription("FacesContext externalContext ApplicationMap");
+//        if (externalContext != null) {
+//            Map<String, Object> applicationMap = externalContext.getApplicationMap();
+//            if (applicationMap != null) {
+//                for (Entry<String, Object> entry : applicationMap.entrySet()) {
+//                    logMessage.addContent(entry.getKey(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
+//                }
+//            }
+//        }
+//        container.addLogMessage(logMessage);
+//
+//        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
+//        logMessage.setIsErrorType(false);
+//        logMessage.setAbstractDescription("Framwork Example");
+//        logMessage.setDescription("FacesContext externalContext varius data");
+//        if (externalContext != null) {
+//
+//            logMessage.addContent("externalContext.getApplicationContextPath()", MimeTypes.PLAIN_TEXT, externalContext.getApplicationContextPath());
+//            logMessage.addContent("externalContext.getContextName()", MimeTypes.PLAIN_TEXT, externalContext.getContextName());
+//            logMessage.addContent("externalContext.getRemoteUser()", MimeTypes.PLAIN_TEXT, externalContext.getRemoteUser());
+//            logMessage.addContent("externalContext.getRequestContextPath()", MimeTypes.PLAIN_TEXT, externalContext.getRequestContextPath());
+//            logMessage.addContent("externalContext.getRequestServerName()", MimeTypes.PLAIN_TEXT, externalContext.getRequestServerName());
+//            logMessage.addContent("externalContext.getRequestServletPath()", MimeTypes.PLAIN_TEXT, externalContext.getRequestServletPath());
+//            logMessage.addContent("externalContext.getContext()", MimeTypes.PLAIN_TEXT, externalContext.getContext().toString());
+//
+//        }
+//        logMessage.setFlow("jsf-flow", "end");
+//
+//        container.addLogMessage(logMessage);
+//
+////              
+//         
+//        getLogger().log(Level.SEVERE, "LOGGER [ " + container.getLogMessages().size() + " ] ");
+//        new LogWriterFacade().write(container);
+//    }
+
+     
+
+     
 
 }
