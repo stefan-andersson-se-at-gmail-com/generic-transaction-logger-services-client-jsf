@@ -185,7 +185,14 @@
                                                  class="ui-corner-all ui-widget-header">
                                 </h:commandButton>
                             </li>
+                            <li>
+                                <h:commandButton id="addLogMessageDataFieldsButton" 
+                                                 value="AddData" 
+                                                 action="#{logMessageController.addLogMessageData()}"
                             
+                                                 class="ui-corner-all ui-widget-header">
+                                </h:commandButton>
+                            </li>
                              
                             <li>
                                 <p:selectCheckboxMenu value="#{logMessageController.dataBaseSearchController.selectedDatabases}" 
