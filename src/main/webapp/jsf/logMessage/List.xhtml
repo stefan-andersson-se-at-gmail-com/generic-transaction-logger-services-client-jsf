@@ -230,16 +230,9 @@
 
                     <h:outputText escape="false" value="#{bundle.ListTransactionEntityEmpty}" rendered="#{logMessageController.items.rowCount == 0}"/>
 
-                    <h:outputText 
-                        rendered="#{logMessageController.pagination.itemsCount == 5000}"
-                        value="#{logMessageController.pagination.pageFirstItem + 1}..#{logMessageController.pagination.pageLastItem + 1}/#{logMessageController.pagination.itemsCount} (Max result)"/>
-
-                    <h:outputText 
-                        rendered="#{logMessageController.pagination.itemsCount != 5000}"
-                        value="#{logMessageController.pagination.pageFirstItem + 1}..#{logMessageController.pagination.pageLastItem + 1}/#{logMessageController.pagination.itemsCount}"/>
-
-                    <h:commandLink action="#{logMessageController.previous}" value="#{bundle.Previous} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.pagination.hasPreviousPage}"/>
-                    <h:commandLink action="#{logMessageController.next}" value="#{bundle.Next} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.pagination.hasNextPage}"/>
+                     
+                    <h:commandLink action="#{logMessageController.previous}" value="#{bundle.Previous} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.pagination.pageNumber > 1}"/>
+                    <h:commandLink action="#{logMessageController.next}" value="#{bundle.Next} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.items.rowCount >= logMessageController.pagination.pageSize }"/>
 
 
 

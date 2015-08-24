@@ -385,22 +385,22 @@
                                 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
                                 <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-DEV/WEB-INF/classes</targetPath>
-                                    <file>src/main/environment/dev/loggger.properties</file>
+                                    <file>src/main/environment/dev/logger.properties</file>
                                     <failIfNotFound>false</failIfNotFound>
                                 </resource>
                                 <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-TEST/WEB-INF/classes</targetPath>
-                                    <file>src/main/environment/test/loggger.properties</file>
+                                    <file>src/main/environment/test/logger.properties</file>
                                     <failIfNotFound>false</failIfNotFound>
                                 </resource>
                                 <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-QA/WEB-INF/classes</targetPath>
-                                    <file>src/main/environment/qa/loggger.properties</file>
+                                    <file>src/main/environment/qa/logger.properties</file>
                                     <failIfNotFound>false</failIfNotFound>
                                 </resource>
                                 <resource>
                                     <targetPath>${basedir}/target/${project.artifactId}-${project.version}-WAR-PROD/WEB-INF/classes</targetPath>
-                                    <file>src/main/environment/prod/loggger.properties</file>
+                                    <file>src/main/environment/prod/logger.properties</file>
                                     <failIfNotFound>false</failIfNotFound>
                                 </resource>
                                 

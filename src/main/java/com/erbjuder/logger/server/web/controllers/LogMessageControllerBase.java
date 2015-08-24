@@ -25,11 +25,14 @@ import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
 import com.erbjuder.logger.server.common.helper.MimeTypes;
 import com.erbjuder.logger.server.entity.impl.LogMessage;
 import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
+import com.erbjuder.logger.server.rest.services.dao.LoggerSchema;
+import com.erbjuder.logger.server.rest.util.ResultSetConverter;
 import com.erbjuder.logger.server.web.helper.CommonWebUtil;
 import com.erbjuder.logger.server.web.helper.PaginationHelper;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -139,7 +142,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
         if (pagination == null) {
 
-            pagination = new PaginationHelper(50) {
+            pagination = new PaginationHelper(10) {
                 public int maxResult = 5000;
 
                 @Override
@@ -159,21 +162,21 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
                         getLogger().log(Level.SEVERE, "getLogMessageFacade().count()");
                         render_response_done = true;
-                        itemCount = getLogMessageFacade().count(
-                                applicationName,
-                                flowName,
-                                flowPointName,
-                                transactionReferenceId,
-                                fromDate != null ? fromDate.getTime() : -1,
-                                toDate != null ? toDate.getTime() : -1,
-                                freeTextSearch,
-                                dataBaseSearchController,
-                                viewError,
-                                maxResult);
+//                        itemCount = getLogMessageFacade().count(
+//                                applicationName,
+//                                flowName,
+//                                flowPointName,
+//                                transactionReferenceId,
+//                                fromDate != null ? fromDate.getTime() : -1,
+//                                toDate != null ? toDate.getTime() : -1,
+//                                freeTextSearch,
+//                                dataBaseSearchController,
+//                                viewError,
+//                                maxResult);
 
                     }
 
-                    return itemCount;
+                    return itemCount = 10;
 
                 }
 
@@ -188,17 +191,58 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                         viewError = false;
                     }
 
-                    ListDataModel list = new ListDataModel(getLogMessageFacade().findRange(
-                            new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},
-                            applicationName,
-                            flowName,
-                            flowPointName,
-                            transactionReferenceId,
-                            fromDate != null ? fromDate.getTime() : -1,
-                            toDate != null ? toDate.getTime() : -1,
-                            freeTextSearch,
-                            dataBaseSearchController,
-                            viewError));
+//                    ListDataModel list = new ListDataModel(getLogMessageFacade().findRange(
+//                            new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},
+//                            applicationName,
+//                            flowName,
+//                            flowPointName,
+//                            transactionReferenceId,
+//                            fromDate != null ? fromDate.getTime() : -1,
+//                            toDate != null ? toDate.getTime() : -1,
+//                            freeTextSearch,
+//                            dataBaseSearchController,
+//                            viewError));
+                    LoggerSchema loggerSchema = new LoggerSchema();
+                    ResultSetConverter converter = new ResultSetConverter();
+
+                    String inFromDate = new java.sql.Timestamp(fromDate.getTime()).toString();
+                    String inToDate = new java.sql.Timestamp(toDate.getTime()).toString();
+                    Integer page = getPageNumber();
+                    Integer pageSize = getPageSize();
+
+                    List<String> viewApplicationNames = new ArrayList<String>();
+                    List<String> viewFlowNames = new ArrayList<String>();
+                    List<String> viewFlowPointName = new ArrayList<String>();
+                    List<String> notViewApplicationNames = new ArrayList<String>();
+                    List<String> notViewFlowNames = new ArrayList<String>();
+                    List<String> notViewFlowPointName = new ArrayList<String>();
+                    List<String> freeTextSearchList = freeTextSearch.getValidQueryList();
+                    List<String> dataBaseSearchList = dataBaseSearchController.getSelectedDatabases();
+                    ListDataModel list = new ListDataModel();
+                  
+                    try {
+                        list = new ListDataModel(converter.toLogMessages(
+                                loggerSchema.search_logMessageList(
+                                        inFromDate,
+                                        inToDate,
+                                        page,
+                                        pageSize,
+                                        transactionReferenceId,
+                                        viewError,
+                                        viewApplicationNames,
+                                        viewFlowNames,
+                                        viewFlowPointName,
+                                        notViewApplicationNames,
+                                        notViewFlowNames,
+                                        notViewFlowPointName,
+                                        freeTextSearchList,
+                                        dataBaseSearchList
+                                )));
+                       
+                        
+                    } catch (Exception ex) {
+                        Logger.getLogger(LogMessageControllerBase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                     return list;
 
@@ -238,7 +282,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     public String prepareLogDataView() {
 //        this.getLogger().log(Level.SEVERE, "prepareLogDataView()");
         current = (LogMessage) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return getReturnPage();
     }
 
@@ -248,7 +292,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         this.setSearchInTransactionReferenceId(item.getTransactionReferenceID());
         this.items = null;
         this.pagination = null;
-        this.selectedItemIndex = -1;
+//        this.selectedItemIndex = -1;
         this.logMsgDetailView = false;
         this.render_response_done = false;
         return getReturnPage();
@@ -536,13 +580,8 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         container.addLogMessage(logMessage);
 
 //              
-         
         getLogger().log(Level.SEVERE, "LOGGER [ " + container.getLogMessages().size() + " ] ");
         new LogWriterFacade().write(container);
     }
-
-     
-
-     
 
 }
