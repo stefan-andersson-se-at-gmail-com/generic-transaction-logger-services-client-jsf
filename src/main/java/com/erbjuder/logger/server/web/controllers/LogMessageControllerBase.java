@@ -20,10 +20,12 @@ package com.erbjuder.logger.server.web.controllers;
 import com.erbjuder.logger.client.logmessage.facade.async.LogWriterFacade;
 import com.erbjuder.logger.client.logmessage.impl.LogMessageContainerImpl;
 import com.erbjuder.logger.client.logmessage.interfaces.LogMessageContainer;
+import com.erbjuder.logger.server.common.helper.DataBase;
 import com.erbjuder.logger.server.common.helper.DataBaseSearchController;
 import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
 import com.erbjuder.logger.server.common.helper.MimeTypes;
 import com.erbjuder.logger.server.entity.impl.LogMessage;
+import com.erbjuder.logger.server.entity.interfaces.LogMessageData;
 import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
 import com.erbjuder.logger.server.rest.services.dao.LoggerSchema;
 import com.erbjuder.logger.server.rest.util.ResultSetConverter;
@@ -219,7 +221,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     List<String> freeTextSearchList = freeTextSearch.getValidQueryList();
                     List<String> dataBaseSearchList = dataBaseSearchController.getSelectedDatabases();
                     ListDataModel list = new ListDataModel();
-                  
+
                     try {
                         list = new ListDataModel(converter.toLogMessages(
                                 loggerSchema.search_logMessageList(
@@ -238,8 +240,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                                         freeTextSearchList,
                                         dataBaseSearchList
                                 )));
-                       
-                        
+
                     } catch (Exception ex) {
                         Logger.getLogger(LogMessageControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -290,6 +291,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         this.getLogger().log(Level.SEVERE, "prepareLogView(LogMessage item)");
 
         this.setSearchInTransactionReferenceId(item.getTransactionReferenceID());
+        this.current = item;
         this.items = null;
         this.pagination = null;
 //        this.selectedItemIndex = -1;
@@ -313,6 +315,48 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     public LogMessage getSelected() {
         return this.current;
+    }
+
+    public void setLogMessageData(List<LogMessageData> data) {
+    }
+
+    public List<LogMessageData> getLogMessageData() {
+
+        LoggerSchema loggerSchema = new LoggerSchema();
+        ResultSetConverter converter = new ResultSetConverter();
+        List<LogMessageData> logMessageData = new ArrayList<LogMessageData>();
+
+        try {
+            PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
+
+            if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
+                logMessageData = converter.toLogMessageData(loggerSchema.fetch_LogMessageData(
+                        current.getId().toString(),
+                        getDefaultSearchableDatabases_2()));
+            }
+
+        } catch (Exception ex) {
+            this.getLogger().log(Level.SEVERE, null, ex);
+        }
+
+        return logMessageData;
+    }
+
+    private List<String> getDefaultSearchableDatabases_2() {
+        List<String> defaultSearchableDatabases = new ArrayList<String>();
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_01_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_02_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_03_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_04_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_05_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_06_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_07_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_08_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_09_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_10_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_11_CLASS.getSimpleName());
+        return defaultSearchableDatabases;
+
     }
 
     private Date getDefaultSearchFromDate() {
