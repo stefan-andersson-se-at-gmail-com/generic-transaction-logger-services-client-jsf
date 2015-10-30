@@ -107,7 +107,9 @@ public abstract class ControllerBase implements Serializable {
         // ToDo Don't use this, it's a temp solution. 
         // Use above insteed when all db-content ar valid
         String content = logMessageData.getContent();
-        if (MimeTypes.BASE64.equalsIgnoreCase(logMessageData.getMimeType())) {
+        if (MimeTypes.TEXT.equalsIgnoreCase(logMessageData.getMimeType()) ||
+            MimeTypes.XML.equalsIgnoreCase(logMessageData.getMimeType()) ||
+            MimeTypes.HTML.equalsIgnoreCase(logMessageData.getMimeType())) {
 
             try {
                 content = CommonWebUtil.XmlFormatter(logMessageData.getContent());

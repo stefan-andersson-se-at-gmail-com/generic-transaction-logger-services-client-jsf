@@ -17,13 +17,9 @@
  */
 package com.erbjuder.logger.server.web.controllers;
 
-import com.erbjuder.logger.client.logmessage.facade.async.LogWriterFacade;
-import com.erbjuder.logger.client.logmessage.impl.LogMessageContainerImpl;
-import com.erbjuder.logger.client.logmessage.interfaces.LogMessageContainer;
 import com.erbjuder.logger.server.common.helper.DataBase;
 import com.erbjuder.logger.server.common.helper.DataBaseSearchController;
 import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
-import com.erbjuder.logger.server.common.helper.MimeTypes;
 import com.erbjuder.logger.server.entity.impl.LogMessage;
 import com.erbjuder.logger.server.entity.interfaces.LogMessageData;
 import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
@@ -38,18 +34,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-import org.apache.axis.encoding.Base64;
 
 /**
  *
@@ -534,98 +525,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         render_response_done = false;
         transactionReferenceId = "";
         recreateModel();
-    }
-
-    public void addLogMessageData() {
-
-        LogMessageContainer container = new LogMessageContainerImpl();
-        container.setApplicationName("generic-transaction-logger-demo");
-
-        com.erbjuder.logger.client.logmessage.impl.LogMessageImpl logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-        logMessage.setIsErrorType(false);
-        logMessage.setFlow("jsf-flow", "start");
-        logMessage.setAbstractDescription("Framwork Example");
-        logMessage.setDescription("Example of how to use this framework inside of Java code");
-        logMessage.addContent("HTML", MimeTypes.BASE64, Base64.encode("<Html><Head></Head><body>Example 2</body></Html>".getBytes()));
-        container.addLogMessage(logMessage);
-
-        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-        logMessage.setIsErrorType(false);
-        logMessage.setAbstractDescription("Framwork Example");
-        logMessage.setDescription("System environment data");
-        Map<String, String> map = System.getenv();
-        if (map != null) {
-            logMessage.addContent("System environment size", MimeTypes.PLAIN_TEXT, "" + map.size());
-            for (String key : map.keySet()) {
-                logMessage.addContent(key, MimeTypes.PLAIN_TEXT, map.get(key));
-            }
-        }
-        container.addLogMessage(logMessage);
-
-        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-        logMessage.setIsErrorType(false);
-        logMessage.setAbstractDescription("Framwork Example");
-        logMessage.setDescription("System properties");
-        Properties properties = System.getProperties();
-        if (properties != null) {
-            logMessage.addContent("System properties size", MimeTypes.PLAIN_TEXT, "" + properties.size());
-            for (Entry<Object, Object> entry : properties.entrySet()) {
-                logMessage.addContent(entry.getKey().toString(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
-            }
-        }
-        container.addLogMessage(logMessage);
-
-        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-        logMessage.setIsErrorType(false);
-        logMessage.setAbstractDescription("Framwork Example");
-        logMessage.setDescription("FacesContext externalContext SessionMap");
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        if (externalContext != null) {
-            Map<String, Object> sessionMap = externalContext.getSessionMap();
-            if (sessionMap != null) {
-                for (Entry<String, Object> entry : sessionMap.entrySet()) {
-                    logMessage.addContent(entry.getKey(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
-                }
-            }
-        }
-        container.addLogMessage(logMessage);
-
-        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-        logMessage.setIsErrorType(false);
-        logMessage.setAbstractDescription("Framwork Example");
-        logMessage.setDescription("FacesContext externalContext ApplicationMap");
-        if (externalContext != null) {
-            Map<String, Object> applicationMap = externalContext.getApplicationMap();
-            if (applicationMap != null) {
-                for (Entry<String, Object> entry : applicationMap.entrySet()) {
-                    logMessage.addContent(entry.getKey(), MimeTypes.PLAIN_TEXT, entry.getValue().toString());
-                }
-            }
-        }
-        container.addLogMessage(logMessage);
-
-        logMessage = new com.erbjuder.logger.client.logmessage.impl.LogMessageImpl();
-        logMessage.setIsErrorType(false);
-        logMessage.setAbstractDescription("Framwork Example");
-        logMessage.setDescription("FacesContext externalContext varius data");
-        if (externalContext != null) {
-
-            logMessage.addContent("externalContext.getApplicationContextPath()", MimeTypes.PLAIN_TEXT, externalContext.getApplicationContextPath());
-            logMessage.addContent("externalContext.getContextName()", MimeTypes.PLAIN_TEXT, externalContext.getContextName());
-            logMessage.addContent("externalContext.getRemoteUser()", MimeTypes.PLAIN_TEXT, externalContext.getRemoteUser());
-            logMessage.addContent("externalContext.getRequestContextPath()", MimeTypes.PLAIN_TEXT, externalContext.getRequestContextPath());
-            logMessage.addContent("externalContext.getRequestServerName()", MimeTypes.PLAIN_TEXT, externalContext.getRequestServerName());
-            logMessage.addContent("externalContext.getRequestServletPath()", MimeTypes.PLAIN_TEXT, externalContext.getRequestServletPath());
-            logMessage.addContent("externalContext.getContext()", MimeTypes.PLAIN_TEXT, externalContext.getContext().toString());
-
-        }
-        logMessage.setFlow("jsf-flow", "end");
-
-        container.addLogMessage(logMessage);
-
-//              
-        getLogger().log(Level.SEVERE, "LOGGER [ " + container.getLogMessages().size() + " ] ");
-        new LogWriterFacade().write(container);
     }
 
 }
