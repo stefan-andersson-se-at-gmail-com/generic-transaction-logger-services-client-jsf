@@ -23,8 +23,8 @@ import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
 import com.erbjuder.logger.server.entity.impl.LogMessage;
 import com.erbjuder.logger.server.entity.interfaces.LogMessageData;
 import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
-import com.erbjuder.logger.server.rest.services.dao.LoggerSchema;
-import com.erbjuder.logger.server.rest.util.ResultSetConverter;
+import com.erbjuder.logger.server.rest.services.dao.LogMessageQueries;
+import com.erbjuder.logger.server.common.helper.ResultSetConverter;
 import com.erbjuder.logger.server.web.helper.CommonWebUtil;
 import com.erbjuder.logger.server.web.helper.PaginationHelper;
 import java.io.Serializable;
@@ -195,7 +195,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 //                            freeTextSearch,
 //                            dataBaseSearchController,
 //                            viewError));
-                    LoggerSchema loggerSchema = new LoggerSchema();
+                    LogMessageQueries loggerSchema = new LogMessageQueries();
                     ResultSetConverter converter = new ResultSetConverter();
 
                     String inFromDate = new java.sql.Timestamp(fromDate.getTime()).toString();
@@ -313,7 +313,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     public List<LogMessageData> getLogMessageData() {
 
-        LoggerSchema loggerSchema = new LoggerSchema();
+        LogMessageQueries loggerSchema = new LogMessageQueries();
         ResultSetConverter converter = new ResultSetConverter();
         List<LogMessageData> logMessageData = new ArrayList<LogMessageData>();
 
