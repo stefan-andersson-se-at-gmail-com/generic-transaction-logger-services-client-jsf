@@ -20,11 +20,11 @@ package com.erbjuder.logger.server.web.controllers;
 import com.erbjuder.logger.server.common.helper.DataBase;
 import com.erbjuder.logger.server.common.helper.DataBaseSearchController;
 import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
+import com.erbjuder.logger.server.common.helper.LogMessageQueries;
+import com.erbjuder.logger.server.common.helper.ResultSetConverter;
 import com.erbjuder.logger.server.entity.impl.LogMessage;
 import com.erbjuder.logger.server.entity.interfaces.LogMessageData;
 import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
-import com.erbjuder.logger.server.rest.services.dao.LogMessageQueries;
-import com.erbjuder.logger.server.common.helper.ResultSetConverter;
 import com.erbjuder.logger.server.web.helper.CommonWebUtil;
 import com.erbjuder.logger.server.web.helper.PaginationHelper;
 import java.io.Serializable;
@@ -195,27 +195,27 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 //                            freeTextSearch,
 //                            dataBaseSearchController,
 //                            viewError));
-                    LogMessageQueries loggerSchema = new LogMessageQueries();
+                    LogMessageQueries logMessageQueries = new LogMessageQueries();
                     ResultSetConverter converter = new ResultSetConverter();
 
                     String inFromDate = new java.sql.Timestamp(fromDate.getTime()).toString();
                     String inToDate = new java.sql.Timestamp(toDate.getTime()).toString();
                     Integer page = getPageNumber();
                     Integer pageSize = getPageSize();
-
-                    List<String> viewApplicationNames = new ArrayList<String>();
-                    List<String> viewFlowNames = new ArrayList<String>();
-                    List<String> viewFlowPointName = new ArrayList<String>();
-                    List<String> notViewApplicationNames = new ArrayList<String>();
-                    List<String> notViewFlowNames = new ArrayList<String>();
-                    List<String> notViewFlowPointName = new ArrayList<String>();
+                    List<String> viewApplicationNames = new ArrayList<>();
+                    List<String> viewFlowNames = new ArrayList<>();
+                    List<String> viewFlowPointName = new ArrayList<>();
+                    List<String> notViewApplicationNames = new ArrayList<>();
+                    List<String> notViewFlowNames = new ArrayList<>();
+                    List<String> notViewFlowPointName = new ArrayList<>();
                     List<String> freeTextSearchList = freeTextSearch.getValidQueryList();
                     List<String> dataBaseSearchList = dataBaseSearchController.getSelectedDatabases();
                     ListDataModel list = new ListDataModel();
-
+                    
+                    
                     try {
                         list = new ListDataModel(converter.toLogMessages(
-                                loggerSchema.search_logMessageList(
+                                logMessageQueries.search_logMessageList(
                                         inFromDate,
                                         inToDate,
                                         page,
@@ -313,7 +313,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     public List<LogMessageData> getLogMessageData() {
 
-        LogMessageQueries loggerSchema = new LogMessageQueries();
+        LogMessageQueries logMessageQueries = new LogMessageQueries();
         ResultSetConverter converter = new ResultSetConverter();
         List<LogMessageData> logMessageData = new ArrayList<LogMessageData>();
 
@@ -321,8 +321,9 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
             PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
 
             if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
-                logMessageData = converter.toLogMessageData(loggerSchema.fetch_LogMessageData(
+                logMessageData = converter.toLogMessageData(logMessageQueries.fetch_LogMessageData(
                         current.getId().toString(),
+                        current.getPartitionId(),
                         getDefaultSearchableDatabases_2()));
             }
 
@@ -439,7 +440,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public List<String> completeApplicationName(String startsWithName) {
-        return getLogMessageFacade().getApplicationNames(fromDate.getTime(), toDate.getTime(), startsWithName);
+        return new ArrayList<>(); // getLogMessageFacade().getApplicationNames(fromDate.getTime(), toDate.getTime(), startsWithName);
     }
 
     public String getSearchInFlowName() {

@@ -16,6 +16,8 @@
                 <h:outputLabel value="ID:  " style="font-weight:bold" />    
                 <h:outputText value="#{logMessageController.selected.id}" />
 
+                <h:outputLabel value="PARTITION_ID:  " style="font-weight:bold" />    
+                <h:outputText value="#{logMessageController.selected.partitionId}" />
 
                 <h:outputLabel value="UTC client time:  " style="font-weight:bold" />    
                 <h:outputText value="#{logMessageController.convertTimestampTime(logMessageController.selected.utcLocalTimeStamp)}" />
