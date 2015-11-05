@@ -77,15 +77,13 @@
                     </h:form>  
 
 
-                    <pre><h:outputText rendered="#{logMessageController.hasContent(logData) and logData.mimeType != 'image/png'}" 
+                    <pre><h:outputText rendered="#{logMessageController.hasContent(logData)}" 
                                         escape="true" 
                                         value="#{logMessageController.decodeContent(logData)}" class="wrap_text"/></pre>
 
                                     
 
-                    <h:graphicImage 
-                        rendered= "#{logData.mimeType = 'image/png'}"
-                        value="data:image/png;base64,#{logMessageController.decodeContent(logData)}" />   
+                   
                     
                 </h:column>
 

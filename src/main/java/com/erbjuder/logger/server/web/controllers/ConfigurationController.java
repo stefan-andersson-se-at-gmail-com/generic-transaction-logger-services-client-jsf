@@ -17,10 +17,7 @@
  */
 package com.erbjuder.logger.server.web.controllers;
 
-import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
 import java.io.Serializable;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -32,26 +29,26 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class ConfigurationController extends ConfigurationControllerBase implements Serializable {
 
-    @EJB
-    private com.erbjuder.logger.server.facade.impl.LogMessageFacadeImpl logMessageFacade;
-   
-    // Logger
-    private static final Logger logger = Logger.getLogger(FlowController.class.getName());
-
-    @Override
-    public Logger getLogger() {
-        return logger;
-    }
-
-    @Override
-    public String getReturnPage() {
-        return "List";
-    }
-
-    @Override
-    public LogMessageFacade getLogMessageFacade() {
-        return logMessageFacade;
-    }
-
-    
+//    @EJB
+//    private com.erbjuder.logger.server.facade.impl.LogMessageFacadeImpl logMessageFacade;
+//   
+//    // Logger
+//    private static final Logger logger = Logger.getLogger(FlowController.class.getName());
+//
+//    @Override
+//    public Logger getLogger() {
+//        return logger;
+//    }
+//
+//    @Override
+//    public String getReturnPage() {
+//        return "List";
+//    }
+//
+//    @Override
+//    public LogMessageFacade getLogMessageFacade() {
+//        return logMessageFacade;
+//    }
+//
+//    
 }

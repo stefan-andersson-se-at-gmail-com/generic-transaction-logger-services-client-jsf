@@ -17,10 +17,7 @@
  */
 package com.erbjuder.logger.server.web.controllers;
 
-import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
 import java.io.Serializable;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -30,26 +27,27 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean(name = "logMessageStatisticController")
 @SessionScoped
-public class LogMessageStatisticController extends LogMessageStatisticControllerBase implements Serializable {
- 
-        // Logger
-    private static final Logger logger = Logger.getLogger(LogMessageStatisticController.class.getName());
-    @EJB
-    private com.erbjuder.logger.server.facade.impl.LogMessageFacadeImpl ejbFacade;
-
-    @Override
-    public Logger getLogger() {
-        return logger;
-    }
-
-    @Override
-    public LogMessageFacade getLogMessageFacade() {
-        return ejbFacade;
-    }
-
-    @Override
-    public String getReturnPage() {
-        return "List";
-    }
+public class LogMessageStatisticController implements Serializable {
+// public class LogMessageStatisticController extends LogMessageStatisticControllerBase implements Serializable {
+// 
+//        // Logger
+//    private static final Logger logger = Logger.getLogger(LogMessageStatisticController.class.getName());
+//    @EJB
+//    private com.erbjuder.logger.server.facade.impl.LogMessageFacadeImpl ejbFacade;
+//
+//    @Override
+//    public Logger getLogger() {
+//        return logger;
+//    }
+//
+//    @Override
+//    public LogMessageFacade getLogMessageFacade() {
+//        return ejbFacade;
+//    }
+//
+//    @Override
+//    public String getReturnPage() {
+//        return "List";
+//    }
      
 }

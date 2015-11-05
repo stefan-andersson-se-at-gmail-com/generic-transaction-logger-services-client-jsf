@@ -17,7 +17,6 @@
  */
 package com.erbjuder.logger.server.web.controllers;
 
-import com.erbjuder.logger.server.common.helper.DataBase;
 import com.erbjuder.logger.server.common.helper.DataBaseSearchController;
 import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
 import com.erbjuder.logger.server.common.helper.LogMessageQueries;
@@ -48,10 +47,11 @@ import javax.faces.model.ListDataModel;
  */
 public abstract class LogMessageControllerBase extends ControllerBase implements Serializable {
 
+    private static final int pageSize = 50;
+    private static final int subtractNumberOfHour = -2;
     //
     // Search
     private boolean render_response_done = false;
-    private Integer itemCount = null;
     private boolean logMsgDetailView = false;
     private Date fromDate;
     private Date toDate;
@@ -135,43 +135,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
         if (pagination == null) {
 
-            pagination = new PaginationHelper(10) {
-                public int maxResult = 5000;
-
-                @Override
-                public int getItemsCount() {
-
-//                    getLogger().log(Level.SEVERE, "getItemsCount()");
-                    Boolean viewError = null;
-                    if (selectedOption == 2) {
-                        viewError = true;
-                    } else if (selectedOption == 3) {
-                        viewError = false;
-                    }
-
-                    PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
-
-                    if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
-
-                        getLogger().log(Level.SEVERE, "getLogMessageFacade().count()");
-                        render_response_done = true;
-//                        itemCount = getLogMessageFacade().count(
-//                                applicationName,
-//                                flowName,
-//                                flowPointName,
-//                                transactionReferenceId,
-//                                fromDate != null ? fromDate.getTime() : -1,
-//                                toDate != null ? toDate.getTime() : -1,
-//                                freeTextSearch,
-//                                dataBaseSearchController,
-//                                viewError,
-//                                maxResult);
-
-                    }
-
-                    return itemCount = 10;
-
-                }
+            pagination = new PaginationHelper(pageSize) {
 
                 @Override
                 public DataModel createPageDataModel() {
@@ -184,17 +148,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                         viewError = false;
                     }
 
-//                    ListDataModel list = new ListDataModel(getLogMessageFacade().findRange(
-//                            new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},
-//                            applicationName,
-//                            flowName,
-//                            flowPointName,
-//                            transactionReferenceId,
-//                            fromDate != null ? fromDate.getTime() : -1,
-//                            toDate != null ? toDate.getTime() : -1,
-//                            freeTextSearch,
-//                            dataBaseSearchController,
-//                            viewError));
                     LogMessageQueries logMessageQueries = new LogMessageQueries();
                     ResultSetConverter converter = new ResultSetConverter();
 
@@ -203,16 +156,18 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     Integer page = getPageNumber();
                     Integer pageSize = getPageSize();
                     List<String> viewApplicationNames = new ArrayList<>();
+                    if (getSearchInApplicationName() != null && getSearchInApplicationName().isEmpty()) {
+                        viewApplicationNames.add(getSearchInApplicationName());
+                    }
                     List<String> viewFlowNames = new ArrayList<>();
                     List<String> viewFlowPointName = new ArrayList<>();
                     List<String> notViewApplicationNames = new ArrayList<>();
                     List<String> notViewFlowNames = new ArrayList<>();
                     List<String> notViewFlowPointName = new ArrayList<>();
                     List<String> freeTextSearchList = freeTextSearch.getValidQueryList();
-                    List<String> dataBaseSearchList = dataBaseSearchController.getSelectedDatabases();
+                    List<String> dataBaseSearchList = dataBaseSearchController.getDataBaseSelectedList();
                     ListDataModel list = new ListDataModel();
-                    
-                    
+
                     try {
                         list = new ListDataModel(converter.toLogMessages(
                                 logMessageQueries.search_logMessageList(
@@ -324,7 +279,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                 logMessageData = converter.toLogMessageData(logMessageQueries.fetch_LogMessageData(
                         current.getId().toString(),
                         current.getPartitionId(),
-                        getDefaultSearchableDatabases_2()));
+                        getDefaultSearchableDatabases()));
             }
 
         } catch (Exception ex) {
@@ -334,30 +289,10 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         return logMessageData;
     }
 
-    private List<String> getDefaultSearchableDatabases_2() {
-        List<String> defaultSearchableDatabases = new ArrayList<String>();
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_01_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_02_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_03_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_04_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_05_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_06_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_07_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_08_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_09_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_10_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_11_CLASS.getSimpleName());
-        return defaultSearchableDatabases;
-
-    }
-
     private Date getDefaultSearchFromDate() {
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.HOUR, subtractNumberOfHour);
         return CommonWebUtil.convertLocalDateToDateTimezone(calendar.getTime(), "UTC");
     }
 
@@ -436,11 +371,39 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void setSearchInApplicationName(String applicationName) {
+        System.err.println( "setSearchInApplicationName=[ " + applicationName + " ] ");
         this.applicationName = applicationName;
     }
 
     public List<String> completeApplicationName(String startsWithName) {
-        return new ArrayList<>(); // getLogMessageFacade().getApplicationNames(fromDate.getTime(), toDate.getTime(), startsWithName);
+        List<String> results = new ArrayList<>();
+        LogMessageQueries logMessageQueries = new LogMessageQueries();
+        ResultSetConverter converter = new ResultSetConverter();
+        List<LogMessage> logMessages;
+        List<String> applicationNames = new ArrayList<>();
+        applicationNames.add(startsWithName);
+        String inFromDate = new java.sql.Timestamp(fromDate.getTime()).toString();
+        String inToDate = new java.sql.Timestamp(toDate.getTime()).toString();
+
+        try {
+//            PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
+//
+//            if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
+            logMessages = converter.toLogMessages(logMessageQueries.search_ApplicationNames(
+                    inFromDate,
+                    inToDate,
+                    applicationNames));
+
+            for (LogMessage logMessage : logMessages) {
+                results.add(logMessage.getApplicationName());
+            }
+
+//            }
+        } catch (Exception ex) {
+            this.getLogger().log(Level.SEVERE, null, ex);
+        }
+
+        return results; // getLogMessageFacade().getApplicationNames(fromDate.getTime(), toDate.getTime(), startsWithName);
     }
 
     public String getSearchInFlowName() {
@@ -452,7 +415,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public List<String> completeFlowName(String startsWithName) {
-        return getLogMessageFacade().getFlowNames(fromDate.getTime(), toDate.getTime(), startsWithName);
+        return new ArrayList<>();// getLogMessageFacade().getFlowNames(fromDate.getTime(), toDate.getTime(), startsWithName);
     }
 
     public String getSearchInFlowPointName() {
@@ -464,7 +427,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public List<String> completeFlowPointName(String startsWithName) {
-        return getLogMessageFacade().getFlowPointNames(fromDate.getTime(), toDate.getTime(), startsWithName);
+        return new ArrayList<>(); // getLogMessageFacade().getFlowPointNames(fromDate.getTime(), toDate.getTime(), startsWithName);
     }
 
     public FreeTextSearchController getFreeTextSearch() {

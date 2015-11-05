@@ -19,7 +19,7 @@
 
             <div class="panelGridOuter">
 
-                <h:link outcome="/index" value="Back"/>
+
 
                 <h:form id="logMessageSearchForm" class="logMessageSearchForm">   
 
@@ -185,8 +185,8 @@
                                                  class="ui-corner-all ui-widget-header">
                                 </h:commandButton>
                             </li>
-                            
-                             
+
+
                             <li>
                                 <p:selectCheckboxMenu value="#{logMessageController.dataBaseSearchController.selectedDatabases}" 
                                                       label="Big payload text search options" 
@@ -223,9 +223,9 @@
 
                     <h:outputText escape="false" value="#{bundle.ListTransactionEntityEmpty}" rendered="#{logMessageController.items.rowCount == 0}"/>
 
-                     
-                    <h:commandLink action="#{logMessageController.previous}" value="#{bundle.Previous} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.pagination.pageNumber > 1}"/>
-                    <h:commandLink action="#{logMessageController.next}" value="#{bundle.Next} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.items.rowCount >= logMessageController.pagination.pageSize }"/>
+
+                    <h:commandLink action="#{logMessageController.previous}" value="#{bundle.Previous} #{logMessageController.pagination.pageSize}     " rendered="#{logMessageController.pagination.pageNumber > 1}"/>&nbsp;
+                    <h:commandLink action="#{logMessageController.next}" value="#{bundle.Next} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.items.rowCount >= logMessageController.pagination.pageSize }"/>&nbsp;
 
 
 
@@ -362,9 +362,9 @@
                     </h:panelGroup>
                     <br />
 
-                    <br />
-                    <br />
-                    <h:link outcome="/index" value="Back"/>
+                    <h:commandLink action="#{logMessageController.previous}" value="#{bundle.Previous} #{logMessageController.pagination.pageSize}     " rendered="#{logMessageController.pagination.pageNumber > 1}"/>&nbsp;
+                    <h:commandLink action="#{logMessageController.next}" value="#{bundle.Next} #{logMessageController.pagination.pageSize}" rendered="#{logMessageController.items.rowCount >= logMessageController.pagination.pageSize }"/>&nbsp;
+
 
                 </h:form>
 

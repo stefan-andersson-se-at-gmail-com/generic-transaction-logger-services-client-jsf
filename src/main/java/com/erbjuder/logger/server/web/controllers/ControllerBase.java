@@ -28,9 +28,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.faces.model.DataModel;
 
@@ -84,19 +84,19 @@ public abstract class ControllerBase implements Serializable {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
-    public Set<Class> getDefaultSearchableDatabases() {
-        Set<Class> defaultSearchableDatabases = new HashSet<Class>();
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_01_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_02_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_03_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_04_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_05_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_06_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_07_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_08_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_09_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_10_CLASS);
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_11_CLASS);
+    public List<String> getDefaultSearchableDatabases() {
+        List<String> defaultSearchableDatabases = new ArrayList<>();
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_01_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_02_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_03_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_04_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_05_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_06_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_07_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_08_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_09_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_10_CLASS.getSimpleName());
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_11_CLASS.getSimpleName());
         return defaultSearchableDatabases;
 
     }
@@ -107,9 +107,9 @@ public abstract class ControllerBase implements Serializable {
         // ToDo Don't use this, it's a temp solution. 
         // Use above insteed when all db-content ar valid
         String content = logMessageData.getContent();
-        if (MimeTypes.TEXT.equalsIgnoreCase(logMessageData.getMimeType()) ||
-            MimeTypes.XML.equalsIgnoreCase(logMessageData.getMimeType()) ||
-            MimeTypes.HTML.equalsIgnoreCase(logMessageData.getMimeType())) {
+        if (MimeTypes.TEXT.equalsIgnoreCase(logMessageData.getMimeType())
+                || MimeTypes.XML.equalsIgnoreCase(logMessageData.getMimeType())
+                || MimeTypes.HTML.equalsIgnoreCase(logMessageData.getMimeType())) {
 
             try {
                 content = CommonWebUtil.XmlFormatter(logMessageData.getContent());
