@@ -156,7 +156,8 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     Integer page = getPageNumber();
                     Integer pageSize = getPageSize();
                     List<String> viewApplicationNames = new ArrayList<>();
-                    if (getSearchInApplicationName() != null && getSearchInApplicationName().isEmpty()) {
+ 
+                    if (getSearchInApplicationName() != null && !getSearchInApplicationName().isEmpty()) {
                         viewApplicationNames.add(getSearchInApplicationName());
                     }
                     List<String> viewFlowNames = new ArrayList<>();
@@ -170,7 +171,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
                     try {
                         list = new ListDataModel(converter.toLogMessages(
-                                logMessageQueries.search_logMessageList(
+                                logMessageQueries.fetch_logMessageList(
                                         inFromDate,
                                         inToDate,
                                         page,
@@ -190,7 +191,8 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     } catch (Exception ex) {
                         Logger.getLogger(LogMessageControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
+                     System.err.println("getPagination result =[ " + list + " ]");
                     return list;
 
                 }
@@ -371,12 +373,13 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void setSearchInApplicationName(String applicationName) {
-        System.err.println( "setSearchInApplicationName=[ " + applicationName + " ] ");
+        System.err.println("setSearchInApplicationName=[ " + applicationName + " ] ");
         this.applicationName = applicationName;
     }
 
     public List<String> completeApplicationName(String startsWithName) {
         List<String> results = new ArrayList<>();
+
         LogMessageQueries logMessageQueries = new LogMessageQueries();
         ResultSetConverter converter = new ResultSetConverter();
         List<LogMessage> logMessages;
@@ -389,7 +392,8 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 //            PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
 //
 //            if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
-            logMessages = converter.toLogMessages(logMessageQueries.search_ApplicationNames(
+
+            logMessages = converter.toLogMessages(logMessageQueries.fetch_ApplicationNames(
                     inFromDate,
                     inToDate,
                     applicationNames));
