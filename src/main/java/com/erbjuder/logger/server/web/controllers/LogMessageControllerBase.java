@@ -191,7 +191,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                         Logger.getLogger(LogMessageControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    System.err.println("getPagination result =[ " + list + " ]");
                     return list;
 
                 }
@@ -277,7 +276,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
             PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
 
             if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
-                System.err.println("DB search Size =[ " + dataBaseSearchController.getDataBaseSelectedList().size() + " ]");
                 logMessageData = converter.toLogMessageData(logMessageQueries.fetch_LogMessageData(
                         current.getId().toString(),
                         current.getPartitionId(),
@@ -373,7 +371,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void setSearchInApplicationName(String applicationName) {
-        System.err.println("setSearchInApplicationName=[ " + applicationName + " ] ");
         this.applicationName = applicationName;
     }
 
@@ -439,8 +436,9 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     inToDate,
                     flowNames));
 
+            int counter = 0;
             for (LogMessage logMessage : logMessages) {
-                results.add(logMessage.getFlowName());
+                results.add(logMessage.getFlowName() + (counter++));
             }
 
 //            }
