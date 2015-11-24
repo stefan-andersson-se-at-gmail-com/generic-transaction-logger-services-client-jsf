@@ -6,23 +6,18 @@ package com.erbjuder.logger.server.web.helper;
 
 import com.erbjuder.logger.server.exception.InvalidXML;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Date;
 import java.util.TimeZone;
-
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSException;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.ls.LSException;
 import org.xml.sax.SAXException;
 
 /**
@@ -85,10 +80,9 @@ public class CommonWebUtil {
                 }
             } else {
 
-                // 
-                // Invalid Char at index transformed into hex 
-                //System.err.println("Index=["+ i +"] Char=["+ String.format("%04x", (int)text.charAt(i)) +"] CodePoint=[" + codePoint + "]");
-                //sb.append("hex"+String.format("%04x", (int)text.charAt(i)));
+//                 Invalid Char at index transformed into hex 
+//                System.err.println("Index=[" + i + "] Char=[" + String.format("%04x", (int) text.charAt(i)) + "] CodePoint=[" + codePoint + "]");
+//                sb.append("hex" + String.format("%04x", (int) text.charAt(i)));
             }
         }
 
@@ -102,7 +96,7 @@ public class CommonWebUtil {
 
             final InputSource src = new InputSource(new StringReader(xmlString.trim()));
             final Node document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(src).getDocumentElement();
-            final Boolean keepDeclaration = Boolean.valueOf(xmlString.startsWith("<?xml"));
+            final Boolean keepDeclaration = xmlString.startsWith("<?xml");
 
             final DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
             final DOMImplementationLS impl = (DOMImplementationLS) registry.getDOMImplementation("LS");
@@ -113,32 +107,8 @@ public class CommonWebUtil {
 
             result = writer.writeToString(document);
 
-        } catch (IOException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (ClassCastException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (IllegalAccessException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (InstantiationException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (ParserConfigurationException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (DOMException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (LSException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
-            throw new InvalidXML(e.getMessage());
-        } catch (SAXException e) {
-            Logger.getGlobal().log(Level.SEVERE, e.getMessage());
+        } catch (IOException | ClassCastException | ClassNotFoundException | IllegalAccessException | InstantiationException | ParserConfigurationException | DOMException | LSException | SAXException e) {
+//            Logger.getLogger(CommonWebUtil.class.getCanonicalName()).log(Level.SEVERE, e.getMessage());
             throw new InvalidXML(e.getMessage());
         }
 

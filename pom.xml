@@ -34,13 +34,13 @@
 
  
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>com.erbjuder.logger</groupId>
             <artifactId>log_message_services_backend</artifactId>
-            <version>${log.message.services.backend.version}</version>
-            <type>jar</type>
+            <version>1.10-SNAPSHOT</version>
+            <type>war</type>
         </dependency>
-        
+        -->
         <!-- By includeing this all SAOP services will be gone -->
         <dependency>
             <groupId>com.erbjuder.logger</groupId>
@@ -48,8 +48,11 @@
             <version>1.10-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
-        
-       
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>log_message_services_backend</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>

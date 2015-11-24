@@ -85,20 +85,19 @@ public abstract class ControllerBase implements Serializable {
     }
 
     public List<String> getDefaultSearchableDatabases() {
-        List<String> defaultSearchableDatabases = new ArrayList<>();
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_01_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_02_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_03_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_04_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_05_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_06_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_07_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_08_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_09_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_10_CLASS.getSimpleName());
-        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_11_CLASS.getSimpleName());
+        List<String> defaultSearchableDatabases = new ArrayList<String>();
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_01_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_02_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_03_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_04_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_05_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_06_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_07_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_08_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_09_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_10_NAME);
+        defaultSearchableDatabases.add(DataBase.LOGMESSAGEDATA_PARTITION_11_NAME);
         return defaultSearchableDatabases;
-
     }
 
     public String decodeContent(com.erbjuder.logger.server.entity.interfaces.LogMessageData logMessageData) {
@@ -120,7 +119,6 @@ public abstract class ControllerBase implements Serializable {
                     content = CommonWebUtil.XmlFormatter(content);
                 } catch (InvalidXML e2) {
                     // Can't do mutch return argument
-                    content = logMessageData.getContent();
                 }
             }
         }
