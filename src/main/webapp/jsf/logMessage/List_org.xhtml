@@ -10,7 +10,7 @@
 
     <ui:composition template="/template.xhtml">
 
-
+      
         <ui:define name="search">
 
 
@@ -35,7 +35,7 @@
                                         </td>
                                         <td> 
                                             <h:inputText value="#{logMessageController.searchFromDate}" 
-                                                         styleClass="date_log_from_to ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+                                                         styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
 
                                         </td>
 
@@ -44,20 +44,19 @@
                                         </td>
                                         <td> 
                                             <h:inputText value="#{logMessageController.searchToDate}" 
-                                                         styleClass="date_log_from_to ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+                                                         styleClass="ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
                                         </td>
 
 
-                                    </tr>
-
+                                    </tr>    
                                     <tr>   
 
-                                        <td class="staticTextSearch_column_four">
+                                        <td class="staticTextSearch_column_three">
                                             <h:outputLabel value=" Application Name:"  />    
                                         </td>
                                         <td> 
                                             <p:autoComplete id="acForceApplicationName" 
-                                                            forceSelection="false" 
+                                                            forceSelection="true" 
                                                             maxResults="200"
                                                             dropdown="true"
                                                             emptyMessage="N/A"
@@ -66,12 +65,12 @@
                                                             completeMethod="#{logMessageController.completeApplicationName}"/>  
                                         </td>
 
-                                        <td class="staticTextSearch_column_five">
+                                        <td class="staticTextSearch_column_four">
                                             <h:outputLabel value=" Flow Name:" />    
                                         </td>
                                         <td> 
                                             <p:autoComplete id="acForceFlowName" 
-                                                            forceSelection="false" 
+                                                            forceSelection="true" 
                                                             maxResults="200"
                                                             dropdown="true"
                                                             emptyMessage="N/A"
@@ -80,22 +79,6 @@
                                                             completeMethod="#{logMessageController.completeFlowName}"/>  
 
                                         </td>
-
-                                        <td class="staticTextSearch_column_sixe">
-                                            <h:outputLabel value=" Flow Point Name:" />    
-                                        </td>
-                                        <td> 
-                                            <p:autoComplete id="acForceFlowPointName" 
-                                                            forceSelection="false" 
-                                                            maxResults="200"
-                                                            dropdown="true"
-                                                            emptyMessage="N/A"
-                                                            scrollHeight="500"
-                                                            value="#{logMessageController.searchInFlowPointName}"   
-                                                            completeMethod="#{logMessageController.completeFlowPointName}"/>  
-
-                                        </td>
-
                                     </tr>
                                 </tbody>
 
@@ -172,14 +155,6 @@
                                     </ui:repeat>
                                 </tbody>
                             </table>
-                            <td class="staticTextSearch_column_three">
-                                <h:outputLabel value=" TransactionReferenceID " />    
-                            </td>
-                            <td> 
-                                <h:inputText id="transactionReferenceId" value="#{logMessageController.transactionReferenceId}" 
-                                             styleClass="date_log_from_to ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
-                            </td>
-
                         </p:outputPanel>
 
                     </div>
@@ -331,15 +306,15 @@
                                                action="#{logMessageController.prepareLogView(item)}" 
                                                value="#{item.transactionReferenceID}"
                                                rendered="#{logMessageController.isSelected(item.id)}"
-                                               update=":logMessageSearchForm:outputPanel_2 :logMessageListForm" 
-                                               />&nbsp;
+                                               update=":logMessageListForm :logMsgDetail"
+                                               oncomplete="PF('logMessageDataDialog').show()"/>&nbsp;
 
                                 <p:commandLink styleClass="notSelectedLink"
                                                action="#{logMessageController.prepareLogView(item)}" 
                                                value="#{item.transactionReferenceID}"
                                                rendered="#{!logMessageController.isSelected(item.id)}"
-                                               update=":logMessageSearchForm:outputPanel_2 :logMessageListForm"
-                                               >
+                                               update=":logMessageListForm :logMsgDetail"
+                                               oncomplete="PF('logMessageDataDialog').show()">
                                     <f:setPropertyActionListener target="#{logMessageController.selected}" value="#{item}" />  &nbsp;
                                 </p:commandLink>
                             </p:column>

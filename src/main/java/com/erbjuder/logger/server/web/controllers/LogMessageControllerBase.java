@@ -167,7 +167,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     List<String> freeTextSearchList = freeTextSearch.getValidQueryList();
                     List<String> dataBaseSearchList = dataBaseSearchController.getDataBaseSelectedList();
                     ListDataModel list = new ListDataModel();
-
+                    System.err.println("transactionReferenceId =[ " + transactionReferenceId + " ] ");
                     try {
                         list = new ListDataModel(converter.toLogMessages(
                                 logMessageQueries.fetch_logMessageList(
@@ -190,6 +190,8 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     } catch (Exception ex) {
                         Logger.getLogger(LogMessageControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
+                    System.err.println("list =[ " + list + " ] ");
 
                     return list;
 
@@ -215,19 +217,23 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         return selectedItemIndex;
     }
 
+    public void setTransactionReferenceId(String TransactionReferenceId) {
+        this.transactionReferenceId = TransactionReferenceId;
+    }
+
     public String getTransactionReferenceId() {
         return transactionReferenceId;
     }
 
     public String hideLogDataView() {
-//        this.getLogger().log(Level.SEVERE, "hideLogDataView()");
+        this.getLogger().log(Level.SEVERE, "hideLogDataView()");
         current = null;
         selectedItemIndex = -1;
         return getReturnPage();
     }
 
     public String prepareLogDataView() {
-//        this.getLogger().log(Level.SEVERE, "prepareLogDataView()");
+        this.getLogger().log(Level.SEVERE, "prepareLogDataView()");
         current = (LogMessage) getItems().getRowData();
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return getReturnPage();
@@ -240,13 +246,14 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
         this.current = item;
         this.items = null;
         this.pagination = null;
-//        this.selectedItemIndex = -1;
         this.logMsgDetailView = false;
         this.render_response_done = false;
+        this.search();
         return getReturnPage();
     }
 
     public String prepareLogMsgDetailView() {
+        this.getLogger().log(Level.SEVERE, "prepareLogMsgDetailView()");
         this.logMsgDetailView = true;
         return getReturnPage();
     }
@@ -404,7 +411,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
             this.getLogger().log(Level.SEVERE, null, ex);
         }
 
-        return results; // getLogMessageFacade().getApplicationNames(fromDate.getTime(), toDate.getTime(), startsWithName);
+        return results;
     }
 
     public String getSearchInFlowName() {
@@ -420,28 +427,16 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
         LogMessageQueries logMessageQueries = new LogMessageQueries();
         ResultSetConverter converter = new ResultSetConverter();
-        List<LogMessage> logMessages;
         List<String> flowNames = new ArrayList<>();
         flowNames.add(startsWithName);
         String inFromDate = new java.sql.Timestamp(fromDate.getTime()).toString();
         String inToDate = new java.sql.Timestamp(toDate.getTime()).toString();
 
         try {
-//            PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
-//
-//            if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
-
-            logMessages = converter.toLogMessages(logMessageQueries.fetch_FlowNames(
+            results = converter.toStringList(logMessageQueries.fetch_FlowNames(
                     inFromDate,
                     inToDate,
                     flowNames));
-
-            int counter = 0;
-            for (LogMessage logMessage : logMessages) {
-                results.add(logMessage.getFlowName() + (counter++));
-            }
-
-//            }
         } catch (Exception ex) {
             this.getLogger().log(Level.SEVERE, null, ex);
         }
@@ -462,24 +457,14 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
         LogMessageQueries logMessageQueries = new LogMessageQueries();
         ResultSetConverter converter = new ResultSetConverter();
-        List<LogMessage> logMessages;
         List<String> flowPointNames = new ArrayList<>();
         flowPointNames.add(startsWithName);
         String inFromDate = new java.sql.Timestamp(fromDate.getTime()).toString();
         String inToDate = new java.sql.Timestamp(toDate.getTime()).toString();
 
         try {
-//            PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
-//
-//            if (!logMsgDetailView && PhaseId.RENDER_RESPONSE.equals(phaseId) && !render_response_done) {
 
-            logMessages = converter.toLogMessages(logMessageQueries.fetch_FlowPointNames(inFromDate, inToDate, flowPointNames));
-
-            for (LogMessage logMessage : logMessages) {
-                results.add(logMessage.getFlowPointName());
-            }
-
-//            }
+            results = converter.toStringList(logMessageQueries.fetch_FlowPointNames(inFromDate, inToDate, flowPointNames));
         } catch (Exception ex) {
             this.getLogger().log(Level.SEVERE, null, ex);
         }
@@ -539,12 +524,11 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void search() {
-//        this.getLogger().log(Level.SEVERE, "search()");
+        this.getLogger().log(Level.SEVERE, "search()");
 
         current = null;
         logMsgDetailView = false;
         render_response_done = false;
-        transactionReferenceId = "";
         recreateModel();
     }
 

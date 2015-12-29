@@ -219,9 +219,9 @@ img.pending{
 }
 
 .tableStaticTextSearch{
-/*    border-collapse: collapse;
+    border-collapse: collapse;
     empty-cells: hide;
-    margin-left: 4%;*/
+    margin-left: 4%;
 }
 .tableBodyStaticTextSearch{
 
@@ -296,15 +296,14 @@ img.pending{
 }
 .panelGridOuter{
     margin: 0 auto;
-    background-color: #677E50;
+    background-color: #E4E4E4;
     border-radius: 3px;
 }
 
 .panelGridInner{
     margin: 0 auto;
-    /*background-color: whitesmoke;*/
+    background-color: whitesmoke;
     border-radius: 3px;
-    width: 85%;
 }
 
 
@@ -315,7 +314,7 @@ img.pending{
 }
 
 .optionalPanelGridInner{
-/*    background-color: whitesmoke;*/
+    background-color: whitesmoke;
     border-radius: 3px;
     display: block;
 

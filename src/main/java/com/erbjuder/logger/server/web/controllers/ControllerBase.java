@@ -68,10 +68,14 @@ public abstract class ControllerBase implements Serializable {
     }
 
     public String convertTimestampTime(Timestamp timestamp) {
-        Format format = getDateFormater();
-        String timeToSeconds = format.format(timestamp);
-        String nanoTime = Integer.toString(timestamp.getNanos());
-        return timeToSeconds + "." + nanoTime;
+        if (timestamp != null) {
+            Format format = getDateFormater();
+            String timeToSeconds = format.format(timestamp);
+            String nanoTime = Integer.toString(timestamp.getNanos());
+            return timeToSeconds + "." + nanoTime;
+        } else {
+            return "";
+        }
     }
 
     public String convertDateTime(Date date) {
