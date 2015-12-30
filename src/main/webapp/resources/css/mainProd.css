@@ -1,19 +1,25 @@
-@import url(org_base.css);
+@import url(base.css);
+
 
 html{
-  background: #FF3300; /* Old browsers */
-  background: -moz-linear-gradient(-45deg,  #101010 0%, #FF0000  100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#101010), color-stop(100%,#FF0000 )); /* Chrome,Safari4+ */ 
-  background: -webkit-linear-gradient(-45deg,  #101010 0%,#FF0000  100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(-45deg,  #101010 0%,#FF0000  100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(-45deg,  #101010 0%,#FF0000  100%); /* IE10+ */
-  background: linear-gradient(135deg,  #101010 0%,#FF0000  100%); /* W3C */ 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#101010', endColorstr='#FF0000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    background:  transparent linear-gradient(135deg, #901919 0%, #F94B4B 100%) repeat fixed 0% 0%;
+    background: -moz-linear-gradient(-135deg,  rg#901919 0%, #F94B4B  100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#901919), color-stop(100%,#F94B4B )); /* Chrome,Safari4+ */ 
+    background: -webkit-linear-gradient(-135deg,  rg#901919 0%,#F94B4B  100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-135deg,  rg#901919 0%,#F94B4B  100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-135deg,  rg#901919 0%,#F94B4B  100%); /* IE10+ */
+    background: linear-gradient(135deg,  #901919 0%,#F94B4B  100%); /* W3C */ 
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#901919', endColorstr='#F94B4B',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
-  background-attachment: fixed;
+    background-attachment: fixed;
 }
-body {
-    /*background-color: lightseagreen;*/
-    /*color: #3A4F54;*/
 
-}   
+.panelGridInner {
+    background-color: #FFECEC;
+}
+.panelGridOuter {
+    background-color: #FFECEC;
+}
+.optionalPanelGridInner {
+    background-color: #FFECEC;
+}

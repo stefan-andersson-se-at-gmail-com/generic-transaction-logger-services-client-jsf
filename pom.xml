@@ -12,7 +12,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.license>gpl30</netbeans.hint.license>
-        <log.message.services.backend.version>1.10-SNAPSHOT</log.message.services.backend.version>
+        <log.message.services.backend.version>1.10</log.message.services.backend.version>
     </properties>
     
     <!-- Git --> 
@@ -34,20 +34,7 @@
 
  
     <dependencies>
-<!--        <dependency>
-            <groupId>com.erbjuder.logger</groupId>
-            <artifactId>log_message_services_backend</artifactId>
-            <version>1.10-SNAPSHOT</version>
-            <type>war</type>
-        </dependency>
-        -->
-        <!-- By includeing this all SAOP services will be gone -->
-<!--        <dependency>
-            <groupId>com.erbjuder.logger</groupId>
-            <artifactId>log_message_client</artifactId>
-            <version>1.10-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>-->
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>log_message_services_backend</artifactId>

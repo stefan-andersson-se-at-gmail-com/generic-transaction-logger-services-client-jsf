@@ -104,10 +104,17 @@ public class CommonWebUtil {
 
             writer.getDomConfig().setParameter("format-pretty-print", Boolean.TRUE); // Set this to true if the output needs to be beautified.
             writer.getDomConfig().setParameter("xml-declaration", keepDeclaration); // Set this to true if the declaration is needed to be outputted.
-
             result = writer.writeToString(document);
 
-        } catch (IOException | ClassCastException | ClassNotFoundException | IllegalAccessException | InstantiationException | ParserConfigurationException | DOMException | LSException | SAXException e) {
+        } catch (IOException |
+                ClassCastException |
+                ClassNotFoundException |
+                IllegalAccessException |
+                InstantiationException |
+                ParserConfigurationException |
+                DOMException |
+                LSException |
+                SAXException e) {
 //            Logger.getLogger(CommonWebUtil.class.getCanonicalName()).log(Level.SEVERE, e.getMessage());
             throw new InvalidXML(e.getMessage());
         }

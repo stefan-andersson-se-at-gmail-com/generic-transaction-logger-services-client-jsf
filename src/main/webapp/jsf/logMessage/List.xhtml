@@ -23,7 +23,7 @@
 
                     <div class="panelGridInner">
 
-                        <p:outputPanel id="outputPanle_1">
+                        <p:outputPanel id="outputPanel_1">
 
                             <table class="tableStaticTextSearch" >
                                 <tbody class="tableBodyStaticTextSearch">
@@ -47,6 +47,14 @@
                                                          styleClass="date_log_from_to ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
                                         </td>
 
+
+                                        <td class="staticTextSearch_column_three">
+                                            <h:outputLabel value=" TransactionReferenceID " />    
+                                        </td>
+                                        <td> 
+                                            <h:inputText id="transactionReferenceId" value="#{logMessageController.transactionReferenceId}" 
+                                                         styleClass="date_log_from_to ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
+                                        </td>
 
                                     </tr>
 
@@ -108,7 +116,7 @@
                             <h:outputLabel value="Search in payloads from : 0 Byte up to 2 Megabyte. Change 'Big payload text search options' for greater payload search size span."/>
                         </div>
 
-                        <p:outputPanel id="outputPanel_2">
+                        <p:outputPanel id="outputPanel_2" >
 
                             <table id="tableFreeTextSearch" class="tableFreeTextSearch">
                                 <tbody class="tableBodyFreeTextSearch">
@@ -172,13 +180,7 @@
                                     </ui:repeat>
                                 </tbody>
                             </table>
-                            <td class="staticTextSearch_column_three">
-                                <h:outputLabel value=" TransactionReferenceID " />    
-                            </td>
-                            <td> 
-                                <h:inputText id="transactionReferenceId" value="#{logMessageController.transactionReferenceId}" 
-                                             styleClass="date_log_from_to ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all"/>
-                            </td>
+
 
                         </p:outputPanel>
 
@@ -221,7 +223,10 @@
                                 </p:selectCheckboxMenu>  
                             </li>
                             <li>
-                                <h:selectOneRadio id="options" value="#{logMessageController.selectedOption}" onclick="submit()">  
+                                <h:selectOneRadio id="options" 
+                                                  value="#{logMessageController.selectedOption}" 
+                                                  onclick="submit()"
+                                                  >  
                                     <f:selectItem itemLabel="List All" itemValue="1" />  
                                     <f:selectItem itemLabel="List Error" itemValue="2" />  
                                     <f:selectItem itemLabel="List Success" itemValue="3" />  
@@ -331,14 +336,14 @@
                                                action="#{logMessageController.prepareLogView(item)}" 
                                                value="#{item.transactionReferenceID}"
                                                rendered="#{logMessageController.isSelected(item.id)}"
-                                               update=":logMessageSearchForm:outputPanel_2 :logMessageListForm" 
+                                               update=":logMessageSearchForm:outputPanel_1 :logMessageListForm" 
                                                />&nbsp;
 
                                 <p:commandLink styleClass="notSelectedLink"
                                                action="#{logMessageController.prepareLogView(item)}" 
                                                value="#{item.transactionReferenceID}"
                                                rendered="#{!logMessageController.isSelected(item.id)}"
-                                               update=":logMessageSearchForm:outputPanel_2 :logMessageListForm"
+                                               update=":logMessageSearchForm:outputPanel_1 :logMessageListForm"
                                                >
                                     <f:setPropertyActionListener target="#{logMessageController.selected}" value="#{item}" />  &nbsp;
                                 </p:commandLink>

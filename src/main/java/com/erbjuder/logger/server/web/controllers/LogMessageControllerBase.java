@@ -19,8 +19,8 @@ package com.erbjuder.logger.server.web.controllers;
 
 import com.erbjuder.logger.server.common.helper.DataBaseSearchController;
 import com.erbjuder.logger.server.common.helper.FreeTextSearchController;
-import com.erbjuder.logger.server.common.helper.LogMessageQueries;
-import com.erbjuder.logger.server.common.helper.ResultSetConverter;
+import com.erbjuder.logger.server.common.services.LogMessageQueries;
+import com.erbjuder.logger.server.common.services.ResultSetConverter;
 import com.erbjuder.logger.server.entity.impl.LogMessage;
 import com.erbjuder.logger.server.entity.interfaces.LogMessageData;
 import com.erbjuder.logger.server.facade.interfaces.LogMessageFacade;
@@ -108,11 +108,11 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     @Override
     public PaginationHelper getPagination() {
-        /*
-         this.getLogger().log(Level.SEVERE, "getPagination() 'pagination == null'=[" + (pagination == null) + "]");
 
-         PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
-         if (PhaseId.ANY_PHASE.equals(phaseId)) {
+//       this.getLogger().log(Level.SEVERE, "getPagination() 'pagination == null'=[" + (pagination == null) + "]");
+//       this.getLogger().log(Level.SEVERE, "getPagination() 'pagination == null'=[" + (pagination == null) + "]");
+//         PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
+/*         if (PhaseId.ANY_PHASE.equals(phaseId)) {
          } else if (PhaseId.ANY_PHASE.equals(phaseId)) {
          this.getLogger().log(Level.SEVERE, "ANY_PHASE");
          }
@@ -131,8 +131,8 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
          if (PhaseId.RESTORE_VIEW.equals(phaseId)) {
          this.getLogger().log(Level.SEVERE, "RESTORE_VIEW");
          }*/
-
-        if (pagination == null) {
+        PhaseId phaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
+        if (pagination == null && PhaseId.RENDER_RESPONSE.equals(phaseId)) {
 
             pagination = new PaginationHelper(pageSize) {
 
@@ -140,11 +140,11 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                 public DataModel createPageDataModel() {
 
                     //getLogger().log(Level.SEVERE, "createPageDataModel()");
-                    Boolean viewError = null;
+                    Integer viewError = null;
                     if (selectedOption == 2) {
-                        viewError = true;
+                        viewError = 1;
                     } else if (selectedOption == 3) {
-                        viewError = false;
+                        viewError = 0;
                     }
 
                     LogMessageQueries logMessageQueries = new LogMessageQueries();
@@ -167,7 +167,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                     List<String> freeTextSearchList = freeTextSearch.getValidQueryList();
                     List<String> dataBaseSearchList = dataBaseSearchController.getDataBaseSelectedList();
                     ListDataModel list = new ListDataModel();
-                    System.err.println("transactionReferenceId =[ " + transactionReferenceId + " ] ");
+  
                     try {
                         list = new ListDataModel(converter.toLogMessages(
                                 logMessageQueries.fetch_logMessageList(
@@ -187,12 +187,11 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
                                         dataBaseSearchList
                                 )));
 
+
+
                     } catch (Exception ex) {
                         Logger.getLogger(LogMessageControllerBase.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
-                    System.err.println("list =[ " + list + " ] ");
-
                     return list;
 
                 }
@@ -240,7 +239,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public String prepareLogView(LogMessage item) {
-        this.getLogger().log(Level.SEVERE, "prepareLogView(LogMessage item)");
+//        this.getLogger().log(Level.SEVERE, "prepareLogView(LogMessage item)");
 
         this.setSearchInTransactionReferenceId(item.getTransactionReferenceID());
         this.current = item;
@@ -253,7 +252,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public String prepareLogMsgDetailView() {
-        this.getLogger().log(Level.SEVERE, "prepareLogMsgDetailView()");
+//        this.getLogger().log(Level.SEVERE, "prepareLogMsgDetailView()");
         this.logMsgDetailView = true;
         return getReturnPage();
     }
@@ -464,7 +463,11 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
         try {
 
-            results = converter.toStringList(logMessageQueries.fetch_FlowPointNames(inFromDate, inToDate, flowPointNames));
+            results = converter.toStringList(logMessageQueries.fetch_FlowPointNames(
+                    inFromDate,
+                    inToDate,
+                    flowPointNames));
+
         } catch (Exception ex) {
             this.getLogger().log(Level.SEVERE, null, ex);
         }
@@ -504,8 +507,7 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
 
     public void setSelectedOption(Integer selectedOption) {
         this.selectedOption = selectedOption;
-        this.items = null;
-        this.pagination = null;
+        this.search();
     }
 
     public void allItems() {
@@ -524,7 +526,6 @@ public abstract class LogMessageControllerBase extends ControllerBase implements
     }
 
     public void search() {
-        this.getLogger().log(Level.SEVERE, "search()");
 
         current = null;
         logMsgDetailView = false;

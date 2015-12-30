@@ -1,5 +1,5 @@
 html{
-     
+
 }
 
 root { 
@@ -219,17 +219,18 @@ img.pending{
 }
 
 .tableStaticTextSearch{
-/*    border-collapse: collapse;
-    empty-cells: hide;
-    margin-left: 4%;*/
+    /*    border-collapse: collapse;
+        empty-cells: hide;
+        margin-left: 4%;*/
 }
 .tableBodyStaticTextSearch{
 
 }
 .staticTextSearch_column_one{
     width: 12%;
-
+    padding-top: 1.5em;
 }
+
 .staticTextSearch_column_two{
 
 }
@@ -258,7 +259,6 @@ img.pending{
     border-collapse: collapse;
     empty-cells: hide;
     margin-top: 1px;
-    margin-left: 4%;
 }
 .tableBodyFreeTextSearch{
 
@@ -272,7 +272,7 @@ img.pending{
 }
 .freeTextSearch_column_three{
     float: left;
-    width: 87.35%;
+    width: 96%;
 
 }
 .freeTextSearch_column_four{
@@ -296,7 +296,7 @@ img.pending{
 }
 .panelGridOuter{
     margin: 0 auto;
-    background-color: #677E50;
+    /*background-color: #677E50;*/
     border-radius: 3px;
 }
 
@@ -308,17 +308,16 @@ img.pending{
 }
 
 
-
 .searchForm{
     background-color: whitesmoke;
     border-radius: 3px;
 }
 
 .optionalPanelGridInner{
-/*    background-color: whitesmoke;*/
+    /*    background-color: whitesmoke;*/
     border-radius: 3px;
     display: block;
-
+    padding-bottom: 0.5em;
 }
 
 .searchOptionPanel {
@@ -391,7 +390,7 @@ img.pending{
     font-weight: normal;
     outline: medium none;
     padding: 4px;
-    min-width: 70%;
+    min-width: 85%;
     margin: 0;
 
 }
